@@ -1,11 +1,14 @@
-
 package Schedule;
 
 import java.util.Scanner;
 import java.io.FileOutputStream;
 import com.thoughtworks.xstream.XStream;
+import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class Main {
@@ -15,22 +18,23 @@ public class Main {
         boolean key = true;
         Scanner sc = new Scanner(System.in, "ISO-8859-1");
         
+        Schedule schedule = null;
         
-//        ArrayList<Contact> schedule = new ArrayList<Contact>();
-//        schedule.add(new Contact("Juan","Sáez García","665020636"));
-//        schedule.add(new Contact("Jose","Sáez García","543214567"));
-//        
-          Schedule schedule = null;
-//        XStream s = new XStream();
-//        s.toXML(schedule,new FileOutputStream("/src/Schedule/data/schedule.xml"));
-        
-//        try{
-//            XStream x = new XStream();
-//            FileInputStream fs = new FileInputStream("/src/Schedule/data/schedule.xml"); 
-//            schedule = (Schedule) x.fromXML(fs); 
-//        }catch(FileNotFoundException e){
-//            System.out.println(e.getMessage());
-//        }
+        try{
+            File file = new File("src/Schedule/data/schedule.dat");
+            
+            FileInputStream fos = new FileInputStream(file);
+            if(!isFileEmpty(file)){
+                ObjectInputStream salida = new ObjectInputStream(fos);
+                schedule = (Schedule) salida.readObject();
+            }else{
+                ArrayList<Contact> list = new ArrayList<Contact>();
+                schedule = new Schedule(list);
+            }
+            
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
                 
         
         do{
@@ -65,14 +69,21 @@ public class Main {
     }
 
     private static void saveExit(Schedule schedule) {
-        XStream x = new XStream(); 
+       
         
         try{
-            x.toXML(schedule,new FileOutputStream("/src/Schedule/data/schedule.xml"));
+            FileOutputStream fos = new FileOutputStream("src/Schedule/data/schedule.dat");
+            ObjectOutputStream salida = new ObjectOutputStream(fos);
+            
+            salida.writeObject(schedule);
             System.out.println("Contacts Saved");
-        }catch(FileNotFoundException e){
+        }catch(Exception e){
             System.out.println(e.getMessage());
         }
         
+    }
+    
+    private static boolean isFileEmpty(File file) {
+        return file.length() == 0;
     }
 }
