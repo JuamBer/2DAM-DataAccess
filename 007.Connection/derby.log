@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Oct 06 13:34:26 CEST 2021:
+ Iniciando instancia a816c00e-017c-5562-1ff1-00000749dee0 de Derby, versión The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): 
+en el directorio de base de datos C:\Users\7JDAM\Documents\DataAccess-2DAM\007.Connection\lib\db\derby\act2.2 con el cargador de clases jdk.internal.loader.ClassLoaders$AppClassLoader@659e0bfd
+Cargado desde file:/C:/Users/7JDAM/Documents/DataAccess-2DAM/007.Connection/lib/jars/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=16.0.2+7-67
+user.dir=C:\Users\7JDAM\Documents\DataAccess-2DAM\007.Connection
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Cargador de clases de base de datos iniciado - derby.database.classpath=''

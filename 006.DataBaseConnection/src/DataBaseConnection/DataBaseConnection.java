@@ -15,7 +15,7 @@ public class DataBaseConnection {
             DatabaseMetaData dbmd = connection.getMetaData();
             System.out.println(databaseproductname+"\n"+drivername+"\n"+driverversion+"\n"+url+"\n"+username);        
             
-            ResultSet resul = dbmd.getTables(null, null,null, null); //all tables
+            ResultSet resul = dbmd.getTables(null, null, null, null); //all tables
             while (resul.next()) {
                 String catalogo = resul.getString(1); // column 1: TABLE_CAT
                 String esquema = resul.getString(2); // column 2: TABLE_SCHEM
