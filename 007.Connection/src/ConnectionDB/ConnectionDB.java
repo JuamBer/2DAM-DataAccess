@@ -57,7 +57,7 @@ public class ConnectionDB {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-    }
+    } 
 
     private static void showDBInformation(Connection connection,int dbtype) {
         try {
