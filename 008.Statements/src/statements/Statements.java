@@ -11,7 +11,7 @@ public class Statements {
             
             ResultSet resul = dbmd.getTables(null, null, null, null); //all tables
             Statement st = connection.createStatement();
-            resul=st.executeQuery("SELECT * FROM teachers");
+            resul=st.executeQuery("SELECT * FROM departments");
             JDBChelper.showResultSet(resul);
             
             resul.close();

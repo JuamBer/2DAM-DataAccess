@@ -14,23 +14,26 @@ public class activityStatements {
     }
     
     public static void menu(){
-        System.out.println("1. Show all teachers\n"
-                            + "2. Show all departments\n"
-                            + "3. Add new teacher\n"
-                            + "4. Add new department\n"
-                            + "5. Add salary column to teachers\n"
-                            + "6. Evaluate custom query\n"
-                            + "7. Quit");
-        int op = sc.nextInt();
-        switch(op){
-                    case 1: showTable("teachers"); break;
-                    case 2: showTable("departments"); break;
-                    case 3: addNewTeacher(); break;
-                    case 4: addNewDepartment(); break;
-                    case 5: addNewColumToTable("teachers"); break;
-                    case 6: evaluateQuery(); break;
-                    case 7: break;
-                }
+        boolean key = true;
+        while(key){
+            System.out.println("1. Show all teachers\n"
+                                + "2. Show all departments\n"
+                                + "3. Add new teacher\n"
+                                + "4. Add new department\n"
+                                + "5. Add salary column to teachers\n"
+                                + "6. Evaluate custom query\n"
+                                + "7. Quit");
+            int op = sc.nextInt();
+            switch(op){
+                        case 1: showTable("teachers"); break;
+                        case 2: showTable("departments"); break;
+                        case 3: addNewTeacher(); break;
+                        case 4: addNewDepartment(); break;
+                        case 5: addNewColumToTable("teachers"); break;
+                        case 6: evaluateQuery(); break;
+                        case 7: key=false; break;
+                    }
+        }
     }
 
     private static void showTable(String tablename) {
@@ -62,6 +65,7 @@ public class activityStatements {
         try {
             System.out.println("Id: ");
             id = sc.nextInt();
+            sc.nextLine();
             System.out.println("name: ");
             name = sc.nextLine();
             System.out.println("surname: ");
@@ -89,32 +93,24 @@ public class activityStatements {
     private static void addNewDepartment() {
         Connection connection;  
         
-        int id;
-        String name;
-        String surname;
-        String email;
-        String start_date;
         int dep_num;
-        
+        String name;
+        String office;
+  
         try {
-            System.out.println("Id: ");
-            id = sc.nextInt();
-            System.out.println("name: ");
-            name = sc.nextLine();
-            System.out.println("surname: ");
-            surname = sc.nextLine();
-            System.out.println("email: ");
-            email = sc.nextLine();
-            System.out.println("start_date: ");
-            start_date = sc.nextLine();
             System.out.println("dep_num: ");
             dep_num = sc.nextInt();
+            System.out.println("name: ");
+            sc.nextLine();
+            name = sc.nextLine();
+            System.out.println("office: ");
+            office = sc.nextLine();
             
             connection = DriverManager.getConnection("jdbc:sqlite:lib\\db\\DB");
             DatabaseMetaData dbmd = connection.getMetaData();
             Statement st = connection.createStatement();
         
-            int result = st.executeUpdate("INSERT INTO teachers VALUES ("+id+","+name+","+surname+","+email+","+start_date+","+dep_num+")");
+            int result = st.executeUpdate("INSERT INTO departments VALUES ("+dep_num+","+name+","+office+")");
             System.out.println(result + "rows affecteds");
             connection.close();
             
@@ -156,8 +152,8 @@ public class activityStatements {
         
         try {
             System.out.println("Query to Execute:");
+            sc.nextLine();
             query = sc.nextLine();
-            
             connection = DriverManager.getConnection("jdbc:sqlite:lib\\db\\DB");
             
             
