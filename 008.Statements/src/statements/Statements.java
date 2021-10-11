@@ -5,13 +5,13 @@ import java.sql.*;
 public class Statements {
     public static void main(String[] args) {
         try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:lib\\db\\sqlite\\act2.1");
+            Connection connection = DriverManager.getConnection("jdbc:sqlite:lib\\db\\DB");
             
             DatabaseMetaData dbmd = connection.getMetaData();
             
             ResultSet resul = dbmd.getTables(null, null, null, null); //all tables
             Statement st = connection.createStatement();
-            resul=st.executeQuery("SELECT * FROM departments");
+            resul=st.executeQuery("SELECT * FROM teachers");
             JDBChelper.showResultSet(resul);
             
             resul.close();
