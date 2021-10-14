@@ -194,7 +194,10 @@ public class MetadataAndStatements {
             connection.close();
 
         } catch (SQLException ex) {
+            String n = ex.getSQLState();
+            System.out.println("STATE: "+n);    
             System.out.println(ex.getMessage());
+            
         }
     }
 
