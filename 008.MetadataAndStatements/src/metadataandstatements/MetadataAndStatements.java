@@ -30,6 +30,7 @@ public class MetadataAndStatements {
                     + "6. Evaluate custom query\n"
                     + "7. Quit \n");
             int op = sc.nextInt();
+            
             switch (op) {
                 case 1:
                     showTable("teachers");
@@ -53,6 +54,7 @@ public class MetadataAndStatements {
                     key = false;
                     break;
             }
+            
         }
     }
 
