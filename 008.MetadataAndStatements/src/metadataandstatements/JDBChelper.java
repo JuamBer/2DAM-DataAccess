@@ -12,7 +12,7 @@ public class JDBChelper {
             ArrayList columnsnames = new ArrayList();
             
             for (int i = 1; i <= n; i++) {
-                columnsnames.add(meta.getColumnName(n));
+                columnsnames.add(meta.getColumnName(i));
                 System.out.print(columnsnames.get(i-1)+" | ");
             }
             System.out.println("");

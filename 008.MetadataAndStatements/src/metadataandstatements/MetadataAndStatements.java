@@ -1,4 +1,3 @@
-
 package metadataandstatements;
 
 import java.sql.Connection;
@@ -10,14 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 public class MetadataAndStatements {
 
     public static Scanner sc = new Scanner(System.in);
 
     public static void main(String[] args) {
         menu();
-        
+
         System.out.println("");
     }
 
@@ -138,49 +136,45 @@ public class MetadataAndStatements {
 //            System.out.println(ex.getMessage());
 //        }
 //    }
-    
     private static void addNewRow(String tablename) {
         Connection connection;
         ArrayList values = new ArrayList();
         ArrayList columnsnames = new ArrayList();
 
         int len = 0;
-        
+
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:lib\\DB");
             Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM "+tablename);
+            ResultSet rs = st.executeQuery("SELECT * FROM " + tablename);
             ResultSetMetaData rsmd = rs.getMetaData();
             len = rsmd.getColumnCount();
             String query = null;
+
             for (int i = 1; i <= len; i++) {
                 columnsnames.add(rsmd.getColumnName(i));
             }
             sc.nextLine();
             for (int i = 1; i <= len; i++) {
-                System.out.println("Insert "+columnsnames.get(i-1)+":");
+                System.out.println("Insert " + columnsnames.get(i - 1) + ":");
                 String val = sc.nextLine();
                 values.add(val);
             }
 
-            query = "INSERT INTO "+tablename+" VALUES (";
-            
+            query = "INSERT INTO " + tablename + " VALUES (";
+
             for (int i = 1; i <= len; i++) {
-                if(i == len){
-                    query += "'"+values.get(i-1)+"')";
-                }else{
-                    query += "'"+values.get(i-1)+"',";
+                if (i == len) {
+                    query += "'" + values.get(i - 1) + "')";
+                } else {
+                    query += "'" + values.get(i - 1) + "',";
                 }
             }
-          
-            System.out.println("query: "+query);
-            
-            int result = st.executeUpdate(query);
-            
-            System.out.println(result + " rows affecteds");
-            
-            connection.close();
 
+            System.out.println("query: " + query);
+            int result = st.executeUpdate(query);
+            System.out.println(result + " rows affecteds");
+            connection.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -229,5 +223,5 @@ public class MetadataAndStatements {
             System.out.println(ex.getMessage());
         }
     }
-    
+
 }
