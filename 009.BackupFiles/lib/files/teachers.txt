@@ -1,0 +1,4 @@
+1,Luz,Martinez,luz.martinez@iesabastos.org,1990-01-01,10
+2,Cristina,Ausina,c.ausina@iesabastos.org,1990-02-01,10
+3,Imma,Cabanes,i.cabanes@iesabastos.org,1990-03-01,10
+4,Mercedes,Sánchez,m.sanchez@iesabastos.org,,40
