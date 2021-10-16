@@ -16,21 +16,21 @@ public class BackupFiles {
         //Create the database in the directory .\database
         if (checkDataBaseExists(DBNAME) == true) {
             deleteDataBase(DBNAME);
-            createDataBase(DBNAME);
+            //createDataBase(DBNAME);
         } else {
             createDataBase(DBNAME);
         }
         //Create departments table and fill it with the data contained in .\files\departments.txt. Print the number of modified rows.
-        createDepartments(DBNAME);
-        fillTable(DBNAME, TABLE_DEPARTMENTS);
+        //createDepartments(DBNAME);
+        //fillTable(DBNAME, TABLE_DEPARTMENTS);
         //Show the contents of departments table using a SELECT query.
-        showTable(DBNAME, TABLE_DEPARTMENTS);
+        //showTable(DBNAME, TABLE_DEPARTMENTS);
 
         //Create teachers table and fill it with the data contained in .\files\teachers.txt. Print the number of modified rows.
-        createTeachers(DBNAME);
-        fillTable(DBNAME, TABLE_TEACHERS);
+        //createTeachers(DBNAME);
+        //fillTable(DBNAME, TABLE_TEACHERS);
         //Show the contents of teachers table using a SELECT query.
-        showTable(DBNAME, TABLE_TEACHERS);
+        //showTable(DBNAME, TABLE_TEACHERS);
 
     }
 
@@ -74,7 +74,7 @@ public class BackupFiles {
             con = DriverManager.getConnection(url); //Open a connection
 
             Statement st = con.createStatement();
-            String sql = "DROP DATABASE BackupFiles";
+            String sql = "DROP DATABASE "+dbname;
             System.out.println("SQL: " + sql);
             st.execute(sql);
             con.close();

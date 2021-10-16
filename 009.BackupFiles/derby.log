@@ -1,57 +1,8 @@
-Sat Oct 16 13:14:40 CEST 2021 Thread[main,5,main] Cleanup action starting
-java.sql.SQLException: XJ004.C : [0] lib\database\BackupFiles
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:115)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:141)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Util.java:225)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Util.java:220)
-	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(EmbedConnection.java:3215)
-	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(EmbedConnection.java:772)
-	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(EmbedConnection.java:442)
-	at org.apache.derby.iapi.jdbc.InternalDriver$1.run(InternalDriver.java:660)
-	at org.apache.derby.iapi.jdbc.InternalDriver$1.run(InternalDriver.java:656)
-	at java.base/java.security.AccessController.doPrivileged(AccessController.java:554)
-	at org.apache.derby.iapi.jdbc.InternalDriver.getNewEmbedConnection(InternalDriver.java:654)
-	at org.apache.derby.iapi.jdbc.InternalDriver.connect(InternalDriver.java:300)
-	at org.apache.derby.iapi.jdbc.InternalDriver.connect(InternalDriver.java:967)
-	at org.apache.derby.iapi.jdbc.AutoloadedDriver.connect(AutoloadedDriver.java:136)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:677)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:251)
-	at backupfiles.BackupFiles.checkDataBaseExists(BackupFiles.java:65)
-	at backupfiles.BackupFiles.main(BackupFiles.java:18)
-Caused by: ERROR XJ004: XJ004.C : [0] lib\database\BackupFiles
-	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:300)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(SQLExceptionFactory.java:170)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:75)
-	... 17 more
-============= begin nested exception, level (1) ===========
-ERROR XJ004: XJ004.C : [0] lib\database\BackupFiles
-	at org.apache.derby.shared.common.error.StandardException.newException(StandardException.java:300)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.wrapArgsForTransportAcrossDRDA(SQLExceptionFactory.java:170)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:75)
-	at org.apache.derby.impl.jdbc.SQLExceptionFactory.getSQLException(SQLExceptionFactory.java:141)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Util.java:225)
-	at org.apache.derby.impl.jdbc.Util.generateCsSQLException(Util.java:220)
-	at org.apache.derby.impl.jdbc.EmbedConnection.newSQLException(EmbedConnection.java:3215)
-	at org.apache.derby.impl.jdbc.EmbedConnection.handleDBNotFound(EmbedConnection.java:772)
-	at org.apache.derby.impl.jdbc.EmbedConnection.<init>(EmbedConnection.java:442)
-	at org.apache.derby.iapi.jdbc.InternalDriver$1.run(InternalDriver.java:660)
-	at org.apache.derby.iapi.jdbc.InternalDriver$1.run(InternalDriver.java:656)
-	at java.base/java.security.AccessController.doPrivileged(AccessController.java:554)
-	at org.apache.derby.iapi.jdbc.InternalDriver.getNewEmbedConnection(InternalDriver.java:654)
-	at org.apache.derby.iapi.jdbc.InternalDriver.connect(InternalDriver.java:300)
-	at org.apache.derby.iapi.jdbc.InternalDriver.connect(InternalDriver.java:967)
-	at org.apache.derby.iapi.jdbc.AutoloadedDriver.connect(AutoloadedDriver.java:136)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:677)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:251)
-	at backupfiles.BackupFiles.checkDataBaseExists(BackupFiles.java:65)
-	at backupfiles.BackupFiles.main(BackupFiles.java:18)
-============= end nested exception, level (1) ===========
-Cleanup action completed
 ----------------------------------------------------------------
-Sat Oct 16 13:14:40 CEST 2021D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017c-88cf-a068-00000ed19e60, [2] C:\Users\juamb\Documents\NetBeansProjects\010.BackupFiles\lib\database\BackupFiles, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@5acf9800, [4] file:/C:/Users/juamb/Documents/NetBeansProjects/010.BackupFiles/lib/derby/derby.jar
+Sat Oct 16 13:33:32 CEST 2021D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017c-88e0-e4ad-00000ed1b4c8, [2] C:\Users\juamb\Documents\Estudios\DataAccess-2DAM\009.BackupFiles\lib\database\BackupFiles, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@5acf9800, [4] file:/C:/Users/juamb/Documents/Estudios/DataAccess-2DAM/009.BackupFiles/lib/derby/derby.jar
 java.vendor=Oracle Corporation
 java.runtime.version=16.0.2+7-67
-user.dir=C:\Users\juamb\Documents\NetBeansProjects\010.BackupFiles
+user.dir=C:\Users\juamb\Documents\Estudios\DataAccess-2DAM\009.BackupFiles
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
