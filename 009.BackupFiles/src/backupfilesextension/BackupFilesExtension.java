@@ -1,12 +1,14 @@
-package backupfiles;
+package backupfilesextension;
 
 import java.sql.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class BackupFiles {
+public class BackupFilesExtension {
 
-    private static final String DBNAME = "BackupFiles";
+    private static final String DBNAME = "BackupFilesExtension";
     private static final String TABLE_DEPARTMENTS = "departments";
     private static final String TABLE_TEACHERS = "teachers";
     public static final String RED = "\u001B[31m";
@@ -112,7 +114,37 @@ public class BackupFiles {
             System.out.println(ex.getMessage());
         }
     }
+    public static void createTable(String dbname,String table) {
+        System.out.println("\n-----CREATE TABLE ("+table+")-----");
+        try {
+            String url = "jdbc:derby:lib\\database\\" + dbname;
+            Connection con = DriverManager.getConnection(url);
+            Statement st = con.createStatement();
+            String sql = "SELECT * FROM " + table;
+            System.out.println("SQL: " + sql);
+            ResultSet set = st.executeQuery(sql);
+            
+            File fl = new File("lib\\extension\\files\\" + table + ".txt");
+            FileReader fr = new FileReader(fl);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+            PreparedStatement ps;
+            
+            
+            ArrayList<Integer> columnstypes = new ArrayList();
 
+            while ((line = br.readLine()) != null) {}
+            st.close();
+            con.close();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(BackupFilesExtension.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(BackupFilesExtension.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public static void createDepartments(String dbname) {
         System.out.println("\n" + GREEN + "-----CREATE DEPARTMENTS-----");
         try {
