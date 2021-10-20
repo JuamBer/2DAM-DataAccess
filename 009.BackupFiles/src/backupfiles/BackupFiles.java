@@ -34,27 +34,6 @@ public class BackupFiles {
 
     }
 
-    public static boolean checkDataBaseExists(String dbname) {
-        System.out.println("\n-----CHECK DATA BASE EXISTS-----");
-        Connection con = null;
-        try {
-            String url = "jdbc:derby:lib\\database\\" + dbname;
-
-            con = DriverManager.getConnection(url); //Open a connection
-
-            con.getMetaData().getCatalogs();
-            con.close();
-
-            System.out.println("DATABASE " + dbname + " EXISTS");
-            return true;
-
-        } catch (SQLException e) {
-            System.out.println("DATABASE " + dbname + " NOT EXISTS");
-        }
-
-        return false;
-    }
-
     public static void createDataBase(String dbname) {
         System.out.println("\n" + GREEN + "-----CREATE DATABSE-----");
         try {
@@ -198,10 +177,7 @@ public class BackupFiles {
 
                 //System.out.println("SQL: " + sql);
                 for (int i = 1; i <= numcols; i++) {
-                    if (data[i - 1].equals("")) {
-                        data[i - 1] = null;
-                    }
-                    String val = data[i - 1];
+                    String val = data[i - 1].equals("") ? null : data[i - 1];
 
                     //System.out.println("DATA "+i+":"+val);
                     //System.out.println("ColumType: " + columnstypes.get(i - 1));
@@ -241,7 +217,26 @@ public class BackupFiles {
             System.out.println(ex.getMessage());
         }
     }
-
+//  public static boolean checkDataBaseExists(String dbname) {
+//        System.out.println("\n-----CHECK DATA BASE EXISTS-----");
+//        Connection con = null;
+//        try {
+//            String url = "jdbc:derby:lib\\database\\" + dbname;
+//
+//            con = DriverManager.getConnection(url); //Open a connection
+//
+//            con.getMetaData().getCatalogs();
+//            con.close();
+//
+//            System.out.println("DATABASE " + dbname + " EXISTS");
+//            return true;
+//
+//        } catch (SQLException e) {
+//            System.out.println("DATABASE " + dbname + " NOT EXISTS");
+//        }
+//
+//        return false;
+//    }
 //    public static void deleteDataBase(String dbname) {
 //        System.out.println("\n-----DELETE DATA BASE-----");
 //        try {

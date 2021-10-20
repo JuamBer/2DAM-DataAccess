@@ -11,50 +11,30 @@ public class BackupFilesExtension {
     private static final String DBNAME = "BackupFilesExtension";
     private static final String TABLE_DEPARTMENTS = "departments";
     private static final String TABLE_TEACHERS = "teachers";
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
     public static final String BLUE = "\u001B[34m";
+    public static final String RESET = "\u001B[0m";
 
     public static void main(String[] args) {
-
         //Check if the database path exists. If so, delete it. This way we create the database and the tables each time we execute the program without problems. Note: File only removes a directory when it is empty, so all contained files and directories should be deleted first. This is a recursive problem.
         //Create the database in the directory .\database    
         deleteFilesDataBase(DBNAME, "lib\\database\\" + DBNAME);
         createDataBase(DBNAME);
 
         //Create departments table and fill it with the data contained in .\files\departments.txt. Print the number of modified rows.
-        createDepartments(DBNAME);
+        createTable(DBNAME, TABLE_DEPARTMENTS);
         fillTable(DBNAME, TABLE_DEPARTMENTS);
         //Show the contents of departments table using a SELECT query.
         showTable(DBNAME, TABLE_DEPARTMENTS);
 
         //Create teachers table and fill it with the data contained in .\files\teachers.txt. Print the number of modified rows.
-        createTeachers(DBNAME);
+        createTable(DBNAME, TABLE_TEACHERS);
         fillTable(DBNAME, TABLE_TEACHERS);
         //Show the contents of teachers table using a SELECT query.
         showTable(DBNAME, TABLE_TEACHERS);
 
-    }
-
-    public static boolean checkDataBaseExists(String dbname) {
-        System.out.println("\n-----CHECK DATA BASE EXISTS-----");
-        Connection con = null;
-        try {
-            String url = "jdbc:derby:lib\\database\\" + dbname;
-
-            con = DriverManager.getConnection(url); //Open a connection
-
-            con.getMetaData().getCatalogs();
-            con.close();
-
-            System.out.println("DATABASE " + dbname + " EXISTS");
-            return true;
-
-        } catch (SQLException e) {
-            System.out.println("DATABASE " + dbname + " NOT EXISTS");
-        }
-
-        return false;
     }
 
     public static void createDataBase(String dbname) {
@@ -63,7 +43,7 @@ public class BackupFilesExtension {
             String url = "jdbc:derby:lib\\database\\" + dbname + ";create=true";
             Connection con = DriverManager.getConnection(url);
             con.close();
-            System.out.println(GREEN + "DATABASE " + GREEN + dbname + GREEN + " CREATED");
+            System.out.println("DATABASE " + dbname + " CREATED");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
@@ -84,7 +64,7 @@ public class BackupFilesExtension {
                         fl.delete();
                     } else {
                         for (int i = 0; i < listchilds.length; i++) {
-                            System.out.println(RED + listchilds[i]);
+                            System.out.println(listchilds[i]);
                             String newurl = url + "\\" + listchilds[i];
                             deleteFilesDataBase(dbname, newurl);
                         }
@@ -97,98 +77,62 @@ public class BackupFilesExtension {
         }
     }
 
-    public static void showTable(String dbname, String table) {
-        System.out.println("\n-----SHOW TABLE-----");
+    public static void createTable(String dbname, String table) {
+        System.out.println("\n" + GREEN + "-----CREATE TABLE (" + table + ")-----");
         try {
-            String url = "jdbc:derby:lib\\database\\" + dbname;
-            Connection con = DriverManager.getConnection(url);
-            Statement st = con.createStatement();
-            String sql = "SELECT * FROM " + table;
-            System.out.println("SQL: " + sql);
-            ResultSet set = st.executeQuery(sql);
-            JDBChelper.showResultSet(set);
-            st.close();
-            con.close();
-
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
-    public static void createTable(String dbname,String table) {
-        System.out.println("\n-----CREATE TABLE ("+table+")-----");
-        try {
-            String url = "jdbc:derby:lib\\database\\" + dbname;
-            Connection con = DriverManager.getConnection(url);
-            Statement st = con.createStatement();
-            String sql = "SELECT * FROM " + table;
-            System.out.println("SQL: " + sql);
-            ResultSet set = st.executeQuery(sql);
-            
-            File fl = new File("lib\\extension\\files\\" + table + ".txt");
+            File fl = new File("lib\\files\\extension\\" + table + ".txt");
             FileReader fr = new FileReader(fl);
             BufferedReader br = new BufferedReader(fr);
-            String line;
-            PreparedStatement ps;
-            
-            
-            ArrayList<Integer> columnstypes = new ArrayList();
 
-            while ((line = br.readLine()) != null) {}
+            String url = "jdbc:derby:lib\\database\\" + dbname;
+            Connection con = DriverManager.getConnection(url);
+            Statement st = con.createStatement();
+
+            String line;
+            String[] columnsnames = null;
+            String[] columnstypes = null;
+            String[] columnsfun = null;
+
+            if ((line = br.readLine()) != null) {
+                columnsnames = line.split(",");
+            }
+            if ((line = br.readLine()) != null) {
+                columnstypes = line.split(",");
+            }
+            if ((line = br.readLine()) != null) {
+                columnsfun = line.split(",");
+            }
+
+            br.close();
+
+            String sql = "CREATE TABLE " + table + " (";
+            for (int i = 0; i < 3; i++) {
+
+                if (columnsfun[i].equals("N")) {
+                    columnsfun[i] = "";
+                }
+
+                if (i == 2) {
+                    sql += columnsnames[i] + " " + columnstypes[i] + " " + columnsfun[i];
+                } else {
+                    sql += columnsnames[i] + " " + columnstypes[i] + " " + columnsfun[i] + ",";
+                }
+
+            }
+            sql += ")";
+
+            System.out.println("SQL: " + sql);
+            int rows = st.executeUpdate(sql);
+            System.out.println(rows + " Affected");
+
             st.close();
             con.close();
 
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(BackupFilesExtension.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(BackupFilesExtension.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public static void createDepartments(String dbname) {
-        System.out.println("\n" + GREEN + "-----CREATE DEPARTMENTS-----");
-        try {
-            String url = "jdbc:derby:lib\\database\\" + dbname;
-            Connection con = DriverManager.getConnection(url);
-            Statement st = con.createStatement();
-            String sql = "CREATE TABLE departments ("
-                    + "dept_num INT PRIMARY KEY,"
-                    + "name VARCHAR(20),"
-                    + "office VARCHAR(20)"
-                    + ")";
-            System.out.println(GREEN + "SQL: " + sql);
-            int rows = st.executeUpdate(sql);
-            System.out.println(GREEN + rows + GREEN + " Affected");
-            st.close();
-            con.close();
-            System.out.println(GREEN + "TABLE departments FROM " + dbname + " DATABASE CREATED");
-        } catch (SQLException ex) {
             System.out.println(ex.getMessage());
-        }
-    }
-
-    public static void createTeachers(String dbname) {
-        System.out.println("\n" + GREEN + "-----CREATE TEACHERS-----");
-        try {
-            String url = "jdbc:derby:lib\\database\\" + dbname;
-            Connection con = DriverManager.getConnection(url);
-            Statement st = con.createStatement();
-            String sql = "CREATE TABLE Teachers ("
-                    + "    id INT PRIMARY KEY,"
-                    + "    name VARCHAR(15),"
-                    + "    surname VARCHAR(40),"
-                    + "    email VARCHAR(50),"
-                    + "    start_date DATE,"
-                    + "    dept_num INT,"
-                    + "    FOREIGN KEY (dept_num) REFERENCES departments (dept_num) "
-                    + ")";
-            System.out.println(GREEN + "SQL: " + sql);
-            int rows = st.executeUpdate(sql);
-            System.out.println(GREEN + rows + GREEN + " Affected");
-            st.close();
-            con.close();
-            System.out.println(GREEN + "TABLE teachers FROM " + dbname + " DATABASE CREATED");
-        } catch (SQLException ex) {
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
@@ -196,7 +140,7 @@ public class BackupFilesExtension {
     public static void fillTable(String dbname, String table) {
         System.out.println("\n" + BLUE + "-----FILL TABLE-----");
         try {
-            File fl = new File("lib\\files\\" + table + ".txt");
+            File fl = new File("lib\\files\\extension\\" + table + ".txt");
             FileReader fr = new FileReader(fl);
             BufferedReader br = new BufferedReader(fr);
             String line;
@@ -224,7 +168,12 @@ public class BackupFilesExtension {
             }
             ps = con.prepareStatement(sql);
 
+            br.readLine();
+            br.readLine();
+            br.readLine();
+
             while ((line = br.readLine()) != null) {
+
                 //System.out.println("\nline: " + line);
                 String[] data = line.split(",");
 
@@ -262,7 +211,7 @@ public class BackupFilesExtension {
 
                 }
                 int rows = ps.executeUpdate();
-                System.out.println(BLUE + rows + BLUE + " affected");
+                System.out.println(rows + " affected");
             }
             con.close();
             fr.close();
@@ -274,22 +223,22 @@ public class BackupFilesExtension {
         }
     }
 
-//    public static void deleteDataBase(String dbname) {
-//        System.out.println("\n-----DELETE DATA BASE-----");
-//        try {
-//            String url = "jdbc:derby:lib\\database\\" + dbname;
-//            Connection con;
-//            con = DriverManager.getConnection(url); //Open a connection
-//
-//            Statement st = con.createStatement();
-//            String sql = "DROP DATABASE "+dbname;
-//            System.out.println("SQL: " + sql);
-//            st.execute(sql);
-//            con.close();
-//
-//        } catch (SQLException e) {
-//            System.out.println("Error: " + e.getMessage());
-//        }
-//    }
+    public static void showTable(String dbname, String table) {
+        System.out.println("\n-----SHOW TABLE-----");
+        try {
+            String url = "jdbc:derby:lib\\database\\" + dbname;
+            Connection con = DriverManager.getConnection(url);
+            Statement st = con.createStatement();
+            String sql = "SELECT * FROM " + table;
+            System.out.println("SQL: " + sql);
+            ResultSet set = st.executeQuery(sql);
+            JDBChelper.showResultSet(set);
+            st.close();
+            con.close();
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 
 }
