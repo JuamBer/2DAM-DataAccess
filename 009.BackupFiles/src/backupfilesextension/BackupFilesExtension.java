@@ -11,34 +11,93 @@ public class BackupFilesExtension {
     private static final String DBNAME = "BackupFilesExtension";
     private static final String TABLE_DEPARTMENTS = "departments";
     private static final String TABLE_TEACHERS = "teachers";
-    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String BLUE = "\u001B[34m";
-    public static final String RESET = "\u001B[0m";
 
     public static void main(String[] args) {
-        //Check if the database path exists. If so, delete it. This way we create the database and the tables each time we execute the program without problems. Note: File only removes a directory when it is empty, so all contained files and directories should be deleted first. This is a recursive problem.
-        //Create the database in the directory .\database    
-        deleteFilesDataBase(DBNAME, "lib\\database\\" + DBNAME);
-        createDataBase(DBNAME);
-
-        //Create departments table and fill it with the data contained in .\files\departments.txt. Print the number of modified rows.
-        createTable(DBNAME, TABLE_DEPARTMENTS);
+        if(checkDataBaseExists(DBNAME)){
+            if(checkTableExists(DBNAME,TABLE_DEPARTMENTS)){
+                truncateTable(DBNAME, TABLE_DEPARTMENTS);
+            }else{
+                createTable(DBNAME, TABLE_DEPARTMENTS);
+            }
+            
+            if(checkTableExists(DBNAME,TABLE_TEACHERS)){
+                truncateTable(DBNAME, TABLE_TEACHERS);
+            }else{
+                createTable(DBNAME, TABLE_TEACHERS);
+            }
+        }else{
+            createDataBase(DBNAME);
+            createTable(DBNAME, TABLE_DEPARTMENTS);
+            createTable(DBNAME, TABLE_TEACHERS);
+        }
+     
         fillTable(DBNAME, TABLE_DEPARTMENTS);
-        //Show the contents of departments table using a SELECT query.
         showTable(DBNAME, TABLE_DEPARTMENTS);
 
-        //Create teachers table and fill it with the data contained in .\files\teachers.txt. Print the number of modified rows.
-        createTable(DBNAME, TABLE_TEACHERS);
         fillTable(DBNAME, TABLE_TEACHERS);
-        //Show the contents of teachers table using a SELECT query.
         showTable(DBNAME, TABLE_TEACHERS);
+    }
 
+    public static boolean checkDataBaseExists(String dbname) {
+        System.out.println("\n-----CHECK DATA BASE EXISTS-----");
+        Connection con = null;
+        try {
+            String url = "jdbc:derby:lib\\database\\" + dbname;
+
+            con = DriverManager.getConnection(url); //Open a connection
+
+            con.getMetaData().getCatalogs();
+            con.close();
+
+            System.out.println("DATABASE " + dbname + " EXISTS");
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println("DATABASE " + dbname + " NOT EXISTS");
+        }
+
+        return false;
+    }
+    public static boolean checkTableExists(String dbname,String table) {
+        System.out.println("\n-----CHECK TABLE ("+table+") EXISTS-----");
+        Connection con = null;
+        try {
+            String url = "jdbc:derby:lib\\database\\" + dbname;
+
+            con = DriverManager.getConnection(url); //Open a connection
+            DatabaseMetaData dbm = con.getMetaData();
+            ResultSet catalog = dbm.getColumns(null,null,table,null);      
+            con.close();
+            System.out.println("TABLE " + table + " EXISTS");
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+    
+    
+    public static void truncateTable(String dbname,String table) {
+        System.out.println("\n-----TRUNCATE TABLE ("+table+")-----");
+        Connection con = null;
+        try {
+            String url = "jdbc:derby:lib\\database\\" + dbname;
+
+            con = DriverManager.getConnection(url); //Open a connection
+            Statement st = con.createStatement();   
+            String sql = "TRUNCATE TABLE "+table;
+            System.out.println("SQL: "+sql);
+            st.executeUpdate(sql);
+            con.close();
+
+            System.out.println("TABLE "+table+" TRUNCATED");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public static void createDataBase(String dbname) {
-        System.out.println("\n" + GREEN + "-----CREATE DATABSE-----");
+        System.out.println("\n-----CREATE DATABASE ("+dbname+")-----");
         try {
             String url = "jdbc:derby:lib\\database\\" + dbname + ";create=true";
             Connection con = DriverManager.getConnection(url);
@@ -49,36 +108,8 @@ public class BackupFilesExtension {
         }
     }
 
-    public static void deleteFilesDataBase(String dbname, String url) {
-        System.out.println(RED + "-----DELETE FILES DATA BASE-----");
-        try {
-            File fl = new File(url);
-            if (fl.exists()) {
-                if (fl.isFile()) {
-                    fl.delete();
-                }
-                if (fl.isDirectory()) {
-                    String[] listchilds = fl.list();
-
-                    if (listchilds.length == 0) {
-                        fl.delete();
-                    } else {
-                        for (int i = 0; i < listchilds.length; i++) {
-                            System.out.println(listchilds[i]);
-                            String newurl = url + "\\" + listchilds[i];
-                            deleteFilesDataBase(dbname, newurl);
-                        }
-                        deleteFilesDataBase(dbname, url);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-    }
-
     public static void createTable(String dbname, String table) {
-        System.out.println("\n" + GREEN + "-----CREATE TABLE (" + table + ")-----");
+        System.out.println("\n-----CREATE TABLE (" + table + ")-----");
         try {
             File fl = new File("lib\\files\\extension\\" + table + ".txt");
             FileReader fr = new FileReader(fl);
@@ -138,7 +169,7 @@ public class BackupFilesExtension {
     }
 
     public static void fillTable(String dbname, String table) {
-        System.out.println("\n" + BLUE + "-----FILL TABLE-----");
+        System.out.println("\n-----FILL TABLE ("+table+")-----");
         try {
             File fl = new File("lib\\files\\extension\\" + table + ".txt");
             FileReader fr = new FileReader(fl);
@@ -224,7 +255,7 @@ public class BackupFilesExtension {
     }
 
     public static void showTable(String dbname, String table) {
-        System.out.println("\n-----SHOW TABLE-----");
+        System.out.println("\n-----SHOW TABLE ("+table+")-----");
         try {
             String url = "jdbc:derby:lib\\database\\" + dbname;
             Connection con = DriverManager.getConnection(url);
@@ -241,4 +272,33 @@ public class BackupFilesExtension {
         }
     }
 
+//    public static void deleteFilesDataBase(String dbname, String url) {
+//        System.out.println("-----DELETE FILES DATA BASE-----");
+//        try {
+//            File fl = new File(url);
+//            if (fl.exists()) {
+//                if (fl.isFile()) {
+//                    fl.delete();
+//                }
+//                if (fl.isDirectory()) {
+//                    String[] listchilds = fl.list();
+//
+//                    if (listchilds.length == 0) {
+//                        fl.delete();
+//                    } else {
+//                        for (int i = 0; i < listchilds.length; i++) {
+//                            System.out.println(listchilds[i]);
+//                            String newurl = url + "\\" + listchilds[i];
+//                            deleteFilesDataBase(dbname, newurl);
+//                        }
+//                        deleteFilesDataBase(dbname, url);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            System.out.println("Error: " + e.getMessage());
+//        }
+//    }
 }
+
+

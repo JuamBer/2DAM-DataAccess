@@ -9,9 +9,6 @@ public class BackupFiles {
     private static final String DBNAME = "BackupFiles";
     private static final String TABLE_DEPARTMENTS = "departments";
     private static final String TABLE_TEACHERS = "teachers";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String BLUE = "\u001B[34m";
 
     public static void main(String[] args) {
 
@@ -35,19 +32,19 @@ public class BackupFiles {
     }
 
     public static void createDataBase(String dbname) {
-        System.out.println("\n" + GREEN + "-----CREATE DATABSE-----");
+        System.out.println("\n-----CREATE DATABASE ("+dbname+")-----");
         try {
             String url = "jdbc:derby:lib\\database\\" + dbname + ";create=true";
             Connection con = DriverManager.getConnection(url);
             con.close();
-            System.out.println(GREEN + "DATABASE " + GREEN + dbname + GREEN + " CREATED");
+            System.out.println( "DATABASE " + dbname + " CREATED");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     public static void deleteFilesDataBase(String dbname, String url) {
-        System.out.println(RED + "-----DELETE FILES DATA BASE-----");
+        System.out.println("-----DELETE FILES DATA BASE-----");
         try {
             File fl = new File(url);
             if (fl.exists()) {
@@ -61,7 +58,7 @@ public class BackupFiles {
                         fl.delete();
                     } else {
                         for (int i = 0; i < listchilds.length; i++) {
-                            System.out.println(RED + listchilds[i]);
+                            System.out.println(listchilds[i]);
                             String newurl = url + "\\" + listchilds[i];
                             deleteFilesDataBase(dbname, newurl);
                         }
@@ -75,7 +72,7 @@ public class BackupFiles {
     }
 
     public static void showTable(String dbname, String table) {
-        System.out.println("\n-----SHOW TABLE-----");
+        System.out.println("\n-----SHOW TABLE ("+table+")-----");
         try {
             String url = "jdbc:derby:lib\\database\\" + dbname;
             Connection con = DriverManager.getConnection(url);
@@ -93,7 +90,7 @@ public class BackupFiles {
     }
 
     public static void createDepartments(String dbname) {
-        System.out.println("\n" + GREEN + "-----CREATE DEPARTMENTS-----");
+        System.out.println("\n-----CREATE DEPARTMENTS-----");
         try {
             String url = "jdbc:derby:lib\\database\\" + dbname;
             Connection con = DriverManager.getConnection(url);
@@ -103,19 +100,19 @@ public class BackupFiles {
                     + "name VARCHAR(20),"
                     + "office VARCHAR(20)"
                     + ")";
-            System.out.println(GREEN + "SQL: " + sql);
+            System.out.println("SQL: " + sql);
             int rows = st.executeUpdate(sql);
-            System.out.println(GREEN + rows + GREEN + " Affected");
+            System.out.println(rows + " Affected");
             st.close();
             con.close();
-            System.out.println(GREEN + "TABLE departments FROM " + dbname + " DATABASE CREATED");
+            System.out.println("TABLE departments FROM " + dbname + " DATABASE CREATED");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     public static void createTeachers(String dbname) {
-        System.out.println("\n" + GREEN + "-----CREATE TEACHERS-----");
+        System.out.println("\n-----CREATE TEACHERS-----");
         try {
             String url = "jdbc:derby:lib\\database\\" + dbname;
             Connection con = DriverManager.getConnection(url);
@@ -129,19 +126,19 @@ public class BackupFiles {
                     + "    dept_num INT,"
                     + "    FOREIGN KEY (dept_num) REFERENCES departments (dept_num) "
                     + ")";
-            System.out.println(GREEN + "SQL: " + sql);
+            System.out.println("SQL: " + sql);
             int rows = st.executeUpdate(sql);
-            System.out.println(GREEN + rows + GREEN + " Affected");
+            System.out.println(rows + " Affected");
             st.close();
             con.close();
-            System.out.println(GREEN + "TABLE teachers FROM " + dbname + " DATABASE CREATED");
+            System.out.println("TABLE teachers FROM " + dbname + " DATABASE CREATED");
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
 
     public static void fillTable(String dbname, String table) {
-        System.out.println("\n" + BLUE + "-----FILL TABLE-----");
+        System.out.println("\n-----FILL TABLE ("+table+")-----");
         try {
             File fl = new File("lib\\files\\" + table + ".txt");
             FileReader fr = new FileReader(fl);
@@ -206,7 +203,7 @@ public class BackupFiles {
 
                 }
                 int rows = ps.executeUpdate();
-                System.out.println(BLUE + rows + BLUE + " affected");
+                System.out.println(rows + " affected");
             }
             con.close();
             fr.close();
