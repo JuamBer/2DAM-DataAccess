@@ -13,7 +13,7 @@ public class BackupFilesExtension {
     private static final String TABLE_TEACHERS = "teachers";
 
     public static void main(String[] args) {
-        if(checkDataBaseExists(DBNAME)){
+        if(checkDataBaseExists(DBNAME)){ 
             if(checkTableExists(DBNAME,TABLE_DEPARTMENTS)){
                 truncateTable(DBNAME, TABLE_DEPARTMENTS);
             }else{

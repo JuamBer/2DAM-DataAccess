@@ -1,10 +1,13 @@
 ----------------------------------------------------------------
-Wed Oct 20 13:23:30 CEST 2021D001 : [0] The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585), [1] a816c00e-017c-9d71-2524-0000077bb9e0, [2] C:\Users\7JDAM\Documents\DataAccess-2DAM\009.BackupFiles\lib\database\BackupFilesExtension, [3] jdk.internal.loader.ClassLoaders$AppClassLoader@5acf9800, [4] file:/C:/Users/7JDAM/Documents/DataAccess-2DAM/009.BackupFiles/lib/derby/derby.jar
-java.vendor=Oracle Corporation
-java.runtime.version=16.0.2+7-67
+Fri Oct 22 13:18:26 CEST 2021:
+ Iniciando instancia a816c00e-017c-a7b9-390a-0000077b5928 de Derby, versión The Apache Software Foundation - Apache Derby - 10.15.2.0 - (1873585): 
+en el directorio de base de datos C:\Users\7JDAM\Documents\DataAccess-2DAM\009.BackupFiles\lib\database\BackupFilesExtension con el cargador de clases jdk.internal.loader.ClassLoaders$AppClassLoader@7aec35a
+Cargado desde file:/C:/Users/7JDAM/Documents/DataAccess-2DAM/009.BackupFiles/lib/derby/derby.jar
+java.vendor=Eclipse Foundation
+java.runtime.version=11.0.12+7
 user.dir=C:\Users\7JDAM\Documents\DataAccess-2DAM\009.BackupFiles
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0
 derby.system.home=null
-C005 : [0] 
+Cargador de clases de base de datos iniciado - derby.database.classpath=''
