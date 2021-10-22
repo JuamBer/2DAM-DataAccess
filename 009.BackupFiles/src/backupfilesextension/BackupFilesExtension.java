@@ -232,7 +232,7 @@ public class BackupFilesExtension {
                             ps.setString(i, val);
                             break;
                         case 91: //Date
-                            ps.setString(i, val);
+                            ps.setDate(i, new Date(Long.parseLong(val)));
                             break;
                         default:
                             ps.setString(i, null);
