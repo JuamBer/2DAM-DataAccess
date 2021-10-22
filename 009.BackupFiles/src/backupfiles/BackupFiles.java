@@ -194,7 +194,6 @@ public class BackupFiles {
                             break;
                         case 91: //Date
                             ps.setString(i, val);
-                            break;
                         default:
                             ps.setString(i, null);
                             break;
