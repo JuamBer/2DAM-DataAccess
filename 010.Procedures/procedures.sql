@@ -2,7 +2,7 @@ CREATE PROCEDURE changeoffice(offi VARCHAR(20))
     modifies sql data 
     UPDATE departments SET office = offi
 .;
-CALL changeoffice1('PROCEDIMIENTO1');
+CALL changeoffice('PROCEDIMIENTO1');
 
 /*
 DEPT_NUM  NAME            OFFICE
