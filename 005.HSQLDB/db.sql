@@ -1,4 +1,4 @@
---java -cp sqltool.jar;hsqldb.jar org.hsqldb.cmdline.SqlTool --inlineRc url=jdbc:hsqldb:file:C:\Users\7JDAM\Documents\DataAcces\Segundo\DDBB\006.HSQLDB\db
+--java -cp sqltool.jar;hsqldb.jar org.hsqldb.cmdline.SqlTool --inlineRc url=jdbc:hsqldb:file:CC:\Users\7JDAM\Documents\DataAccess-2DAM\005.HSQLDB\db
 
 
 CREATE TABLE Departments (
