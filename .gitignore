@@ -1,6 +1,3 @@
-
-
-# NetBeans specific #
 **/nbproject/private/
 **/nbproject/Makefile-*.mk
 **/nbproject/Package-*.bash
@@ -9,6 +6,5 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
-# Class Files #
 
 /Engines/
