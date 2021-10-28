@@ -1,5 +1,6 @@
-package examplecallablestatement;
+package exampleoutparameters;
 
+import examplecallablestatement.*;
 import java.sql.*;
 import java.util.ArrayList;
 
