@@ -97,9 +97,9 @@ public class ExampleOutParameters {
                 + "BEGIN ATOMIC "
                 + " DECLARE QUERYDATE DATE; "
                 + " DECLARE QUERYNAME VARCHAR(15); "
-                + " SET QUERYDATE = SELECT MAX(start_date) FROM teachers;"
-                + " SET QUERYNAME = SELECT name FROM teachers WHERE start_date=QUERYDATE;"
-                + "SET res = QUERYNAME;"
+                + " SET QUERYDATE = SELECT MIN(start_date) FROM teachers;"
+                + " SET QUERYNAME = SELECT name FROM teachers WHERE start_date=QUERYDATE LIMIT 1;"
+                + " SET res = QUERYNAME;"
                 + "END;";
                 
             stt.executeUpdate(sql);
