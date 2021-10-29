@@ -95,9 +95,13 @@ public class ExampleOutParameters {
             sql = "CREATE PROCEDURE mostVeteranTeacher(OUT res VARCHAR(15)) "
                 + "READS SQL DATA "
                 + "BEGIN ATOMIC "
-                + " DECLARE QUERY VARCHAR(15); "
-                + " SET QUERY = SELECT name FROM teachers WHERE start_date; "
-                + "SET res = QUERY;";
+                + " DECLARE QUERYDATE DATE; "
+                + " DECLARE QUERYNAME VARCHAR(15); "
+                + " SET QUERYDATE = SELECT MAX(start_date) FROM teachers;"
+                + " SET QUERYNAME = SELECT name FROM teachers WHERE start_date=QUERYDATE;"
+                + "SET res = QUERYNAME;"
+                + "END;";
+                
             stt.executeUpdate(sql);
             call = con.prepareCall("CALL mostVeteranTeacher(?)");
             call.registerOutParameter(1, Types.VARCHAR);
