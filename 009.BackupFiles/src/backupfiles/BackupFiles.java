@@ -193,6 +193,7 @@ public class BackupFiles {
                             ps.setString(i, val);
                             break;
                         case 91: //Date
+                            System.out.println("Date: "+val);
                             ps.setDate(i, new Date(Long.parseLong(val)));
                         default:
                             ps.setString(i, null);
