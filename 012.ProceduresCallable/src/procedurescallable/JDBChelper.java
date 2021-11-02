@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 
 public class JDBChelper {
+    /**Show by console a resultset in table format */
     public static void showResultSet(ResultSet set){
         try {
             ResultSetMetaData meta = set.getMetaData();

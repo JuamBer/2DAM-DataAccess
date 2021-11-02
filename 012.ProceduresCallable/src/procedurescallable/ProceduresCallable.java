@@ -32,7 +32,7 @@ public class ProceduresCallable {
         menu(con, stt, call);
 
     }
-
+    /**Drop all procedures of the database */
     public static void dropProcedures(Statement stt) throws SQLException {
         String sql;
 
@@ -53,7 +53,8 @@ public class ProceduresCallable {
         sql = "DROP PROCEDURE count_teachers IF EXISTS";
         stt.executeUpdate(sql);
     }
-
+    
+    /**Create all procedures of the database*/
     public static void createProcedures(Statement stt) throws SQLException {
         String sql;
 
@@ -126,7 +127,7 @@ public class ProceduresCallable {
         stt.executeUpdate(sql);
 
     }
-
+    /** Show the menu to choose an option*/
     public static void menu(Connection con, Statement stt, CallableStatement call) throws SQLException, ParseException {
         boolean key = true;
 
@@ -187,11 +188,11 @@ public class ProceduresCallable {
 
         }
     }
-
+    /**Uses a procedure to insert data in tables of the database. */
     private static void setInsert(Connection con, Statement stt, CallableStatement call, String table) throws SQLException, ParseException {
-        ArrayList<String> values = new ArrayList();
-        ArrayList<String> columnsnames = new ArrayList();
-        ArrayList<Integer> columnstypes = new ArrayList();
+        ArrayList<String> values = new ArrayList<String>();
+        ArrayList<String> columnsnames = new ArrayList<String>();
+        ArrayList<Integer> columnstypes = new ArrayList<Integer>();
         String func = null;
         int len = 0;
 
@@ -257,23 +258,26 @@ public class ProceduresCallable {
         call.execute();
 
     }
-
+    /**Uses a procedure to set salary. */
     private static void setSalary(Connection con, Statement stt, CallableStatement call, int sal) throws SQLException {
         call = con.prepareCall("CALL set_salary(?)");
         call.setInt(1, sal);
         call.execute();
     }
+    /**Uses a procedure to raise salary. */
     private static void raiseSalary(Connection con, Statement stt, CallableStatement call, int per) throws SQLException {
         call = con.prepareCall("CALL rise_salary_prct(?)");
         call.setInt(1, per);
         call.execute();
     }
+    /**Uses a procedure to raise the salary in a specific department. */
     private static void raiseSalaryDepartment(Connection con, Statement stt, CallableStatement call, int per, String dep) throws SQLException {
         call = con.prepareCall("CALL rise_salary_per_dept(?,?)");
         call.setInt(1, per);
         call.setString(2, dep);
         call.execute();
     }
+    /**Uses a procedure to get the newest teacher and show it. */
     private static void getNewestTeacher(Connection con, Statement stt, CallableStatement call) throws SQLException {
         call = con.prepareCall("CALL get_newest_teacher(?)");
         call.registerOutParameter(1, Types.VARCHAR);
@@ -281,6 +285,7 @@ public class ProceduresCallable {
         
         System.out.println("News Teacher: "+call.getString(1));
     }
+    /**Uses a procedure to get the number of teachers in a specific department and show it. */
     private static void countTeachersOfDepartment(Connection con, Statement stt, CallableStatement call, String dep) throws SQLException {
         call = con.prepareCall("CALL count_teachers(?,?)");
         call.setString(1, dep);
