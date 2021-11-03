@@ -6,7 +6,9 @@ import java.sql.Statement;
 
 public class Procedures {
     
-    /**Create all procedures of the database*/
+    /**Create all procedures of the databa
+     * @param stt
+     * @throws java.sql.SQLException*/
     public static void createProcedures(Statement stt) throws SQLException {
         String sql;
 
@@ -47,12 +49,13 @@ public class Procedures {
         stt.executeUpdate(sql);
 
         System.out.println(" ...Creating Procedure: rise_salary_per_dept");
-        sql = "CREATE PROCEDURE rise_salary_per_dept(p FLOAT, dept_nam VARCHAR(15)) "
+        sql = "CREATE PROCEDURE rise_salary_per_dept(p FLOAT, dept_name VARCHAR(15)) "
                 + "MODIFIES SQL DATA "
                 + "BEGIN ATOMIC "
                 + " DECLARE OP INT; "
                 + " SET OP = p/10; "
-                + " UPDATE teachers SET salary=salary+(salary*OP) WHERE teachers.dept_num LIKE dept_nam; "
+                + " UPDATE teachers SET salary = salary + (salary * OP) WHERE dept_num IN (" 
+                + "     SELECT dept_num FROM departments WHERE name LIKE dept_name);"
                 + "END; ";
         stt.executeUpdate(sql);
 
@@ -69,11 +72,12 @@ public class Procedures {
         stt.executeUpdate(sql);
 
         System.out.println(" ...Creating Procedure: count_teachers");
-        sql = "CREATE PROCEDURE count_teachers(IN dept_nam VARCHAR(15), OUT res INT) "
+        sql = "CREATE PROCEDURE count_teachers(IN dept_name VARCHAR(15), OUT res INT) "
                 + "READS SQL DATA "
                 + "BEGIN ATOMIC "
                 + " DECLARE NUMTEACHERS INT; "
-                + " SET NUMTEACHERS = SELECT COUNT(name) FROM teachers WHERE teachers.dept_num=dept_nam;"
+                + " SET NUMTEACHERS = SELECT COUNT(name) FROM teachers WHERE dept_num IN (" 
+                + "     SELECT dept_num FROM departments WHERE name LIKE dept_name);"
                 + " SET res = NUMTEACHERS; "
                 + "END; ";
         stt.executeUpdate(sql);
@@ -81,7 +85,9 @@ public class Procedures {
     }
     
     
-    /**Drop all procedures of the database */
+    /**Drop all procedures of the database
+     * @param stt
+     * @throws java.sql.SQLException */
     public static void dropProcedures(Statement stt) throws SQLException {
         String sql;
 

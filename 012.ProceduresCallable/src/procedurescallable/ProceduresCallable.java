@@ -1,8 +1,10 @@
 package procedurescallable;
 
 import java.sql.*;
-import java.util.*;
+import java.util.Scanner;
+import java.util.ArrayList;
 import java.text.ParseException;
+
 
 public class ProceduresCallable {
 
@@ -11,16 +13,18 @@ public class ProceduresCallable {
     public static void main(String[] args) throws SQLException, ParseException {
 
         String url = "jdbc:hsqldb:.\\lib\\database\\db";
+        
         Connection con = DriverManager.getConnection(url);
         Statement stt = con.createStatement();
         CallableStatement call = null;
-        String sql;
-
+            
         Procedures.dropProcedures(stt);
         Procedures.createProcedures(stt);
-
+            
         menu(con, stt, call);
-
+            
+        stt.close();
+        
     }
     
     
@@ -45,38 +49,69 @@ public class ProceduresCallable {
                     + "8. Quit\n");
             int op = sc.nextInt();
 
+            int salary;
+            String department;
             switch (op) {
                 case 1:
+                    System.out.println("-----Departments Table Before-----");
+                    JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM departments"));
+                    System.out.println("");
+            
                     setInsert(con, stt, call, "departments");
                     break;
                 case 2:
+                    System.out.println("-----Teachers Table Before-----");
+                    JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
+                    System.out.println("");
+                    
                     setInsert(con, stt, call, "teachers");
                     break;
                 case 3:
+                    System.out.println("-----Teachers Table Before Updating Salary-----");
+                    JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
+                    System.out.println("");
+                    
                     System.out.println("Set salary to: ");
-                    int sal = sc.nextInt();
-                    setSalary(con, stt, call, sal);
+                    salary = sc.nextInt();
+                    setSalary(con, stt, call, salary);
                     break;
                 case 4:
+                    System.out.println("-----Teachers Table Before Updating Salary-----");
+                    JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
+                    System.out.println("");
+                    
                     System.out.println("Raise salary: ");
-                    int per = sc.nextInt();
-                    raiseSalary(con, stt, call, per);    
+                    salary = sc.nextInt();
+                    raiseSalary(con, stt, call, salary);    
                     break;
                 case 5:
+                    System.out.println("-----Teachers Table Before Updating Salary-----");
+                    JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
+                    System.out.println("");
+        
                     System.out.println("Raise salary: ");
-                    int sala = sc.nextInt();
+                    salary = sc.nextInt();
                     sc.nextLine();
+                    
+                    System.out.println("-----Departments Table To Consult-----");
+                    JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM departments"));
+                    System.out.println("");
+                    
                     System.out.println("Department: ");
-                    String dep = sc.nextLine();
-                    raiseSalaryDepartment(con, stt, call, sala, dep);       
+                    department = sc.nextLine();
+                    raiseSalaryDepartment(con, stt, call, salary, department);       
                     break;
                 case 6:
                     getNewestTeacher(con, stt, call);
                     break;
                 case 7:
-                    System.out.println("Department: ");
+                    System.out.println("-----Departments Table To Consult-----");
+                    JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM departments"));
+                    System.out.println("");
+
                     sc.nextLine();
-                    String department = sc.nextLine();
+                    System.out.println("Department: ");
+                    department = sc.nextLine();
                     countTeachersOfDepartment(con, stt, call, department);
                     break;
                 case 8:
@@ -88,16 +123,15 @@ public class ProceduresCallable {
     }
     /**Uses a procedure to insert data in tables of the database. */
     private static void setInsert(Connection con, Statement stt, CallableStatement call, String table) throws SQLException, ParseException {
-        ArrayList<String> values = new ArrayList<String>();
-        ArrayList<String> columnsNames = new ArrayList<String>();
-        ArrayList<Integer> columnsTypes = new ArrayList<Integer>();
+        ArrayList<String> values = new ArrayList<>();
+        ArrayList<String> columnsNames = new ArrayList<>();
+        ArrayList<Integer> columnsTypes = new ArrayList<>();
         String procedure = null;
-        int numColumns = 0;
+        int numColumns;
 
         ResultSet rs = stt.executeQuery("SELECT * FROM " + table);
         ResultSetMetaData rsmd = rs.getMetaData();
         numColumns = rsmd.getColumnCount();
-        String query = null;
 
         for (int i = 1; i <= numColumns; i++) {
             columnsNames.add(rsmd.getColumnName(i));
@@ -111,16 +145,8 @@ public class ProceduresCallable {
         }
 
         if (table.equals("teachers")) {
-            System.out.println("-----Teachers Table Before Updating Salary-----");
-            JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
-            System.out.println("");
-            
             procedure = "set_new_teacher(?,?,?,?,?,?,?)";
         } else if (table.equals("departments")) {
-            System.out.println("-----Departments Table Before Updating Salary-----");
-            JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM departments"));
-            System.out.println("");
-            
             procedure = "set_new_department(?,?,?)";
         }
        
@@ -137,7 +163,8 @@ public class ProceduresCallable {
                     call.setString(i, val);
                     break;
                 case 91: //Date
-                    call.setDate(i, java.sql.Date.valueOf(val));
+                    Date date = Date.valueOf(val);
+                    call.setDate(i, date);
                     break;
                 default:
                     call.setString(i, null);
@@ -149,23 +176,19 @@ public class ProceduresCallable {
         call.execute();
         
         if (table.equals("teachers")) {
-            System.out.println("-----Teachers Table After Updating Salary-----");
+            System.out.println("-----Teachers Table After-----");
             JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
             System.out.println("");
         } else if (table.equals("departments")) {
-            System.out.println("-----Departments Table After Updating Salary-----");
+            System.out.println("-----Departments Table After-----");
             JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM departments"));
             System.out.println("");
         }
     }
     /**Uses a procedure to set salary. */
-    private static void setSalary(Connection con, Statement stt, CallableStatement call, int sal) throws SQLException {
-        System.out.println("-----Teachers Table Before Updating Salary-----");
-        JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
-        System.out.println("");
-        
+    private static void setSalary(Connection con, Statement stt, CallableStatement call, int salary) throws SQLException {
         call = con.prepareCall("CALL set_salary(?)");
-        call.setInt(1, sal);
+        call.setInt(1, salary);
         call.execute();
         
         System.out.println("-----Teachers Table After Updating Salary-----");
@@ -174,13 +197,9 @@ public class ProceduresCallable {
             
     }
     /**Uses a procedure to raise salary. */
-    private static void raiseSalary(Connection con, Statement stt, CallableStatement call, int per) throws SQLException {
-        System.out.println("-----Teachers Table Before Updating Salary-----");
-        JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
-        System.out.println("");
-        
+    private static void raiseSalary(Connection con, Statement stt, CallableStatement call, int salary) throws SQLException {
         call = con.prepareCall("CALL rise_salary_prct(?)");
-        call.setInt(1, per);
+        call.setInt(1, salary);
         call.execute();
         
         System.out.println("-----Teachers Table After Updating Salary-----");
@@ -188,14 +207,10 @@ public class ProceduresCallable {
         System.out.println("");
     }
     /**Uses a procedure to raise the salary in a specific department. */
-    private static void raiseSalaryDepartment(Connection con, Statement stt, CallableStatement call, int per, String dep) throws SQLException {
-        System.out.println("-----Teachers Table Before Updating Salary-----");
-        JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
-        System.out.println("");
-        
+    private static void raiseSalaryDepartment(Connection con, Statement stt, CallableStatement call, int salary, String department) throws SQLException {
         call = con.prepareCall("CALL rise_salary_per_dept(?,?)");
-        call.setInt(1, per);
-        call.setString(2, dep);
+        call.setInt(1, salary);
+        call.setString(2, department);
         call.execute();
         
         System.out.println("-----Teachers Table After Updating Salary-----");
@@ -215,13 +230,13 @@ public class ProceduresCallable {
         System.out.println("");
     }
     /**Uses a procedure to get the number of teachers in a specific department and show it. */
-    private static void countTeachersOfDepartment(Connection con, Statement stt, CallableStatement call, String dep) throws SQLException {
+    private static void countTeachersOfDepartment(Connection con, Statement stt, CallableStatement call, String department) throws SQLException {
         call = con.prepareCall("CALL count_teachers(?,?)");
-        call.setString(1, dep);
+        call.setString(1, department);
         call.registerOutParameter(2, Types.INTEGER);
         call.execute();
         
-        System.out.println("Number of teacher of "+dep+" department: "+call.getInt(2));
+        System.out.println("Number of teacher of "+department+" department: "+call.getInt(2));
         
         System.out.println("\n-----Teachers Table-----");
         JDBChelper.showResultSet(stt.executeQuery("SELECT * FROM teachers"));
