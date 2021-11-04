@@ -11,19 +11,11 @@ public class BackupFilesExtension {
     private static final String TABLE_DEPARTMENTS = "departments";
     private static final String TABLE_TEACHERS = "teachers";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         if(checkDataBaseExists(DBNAME)){ 
-            if(checkTableExists(DBNAME,TABLE_DEPARTMENTS)){
-                truncateTable(DBNAME, TABLE_DEPARTMENTS);
-            }else{
-                createTable(DBNAME, TABLE_DEPARTMENTS);
-            }
-            
-            if(checkTableExists(DBNAME,TABLE_TEACHERS)){
-                truncateTable(DBNAME, TABLE_TEACHERS);
-            }else{
-                createTable(DBNAME, TABLE_TEACHERS);
-            }
+            truncateTable(DBNAME, TABLE_TEACHERS);
+            deleteTable(DBNAME, TABLE_DEPARTMENTS);
+            createTable(DBNAME, TABLE_DEPARTMENTS);
         }else{
             createDataBase(DBNAME);
             createTable(DBNAME, TABLE_DEPARTMENTS);
@@ -57,23 +49,23 @@ public class BackupFilesExtension {
 
         return false;
     }
-    public static boolean checkTableExists(String dbname,String table) {
-        System.out.println("\n-----CHECK TABLE ("+table+") EXISTS-----");
-        Connection con = null;
-        try {
-            String url = "jdbc:derby:lib\\database\\" + dbname;
-
-            con = DriverManager.getConnection(url); //Open a connection
-            DatabaseMetaData dbm = con.getMetaData();
-            ResultSet catalog = dbm.getColumns(null,null,table,null);      
-            con.close();
-            System.out.println("TABLE " + table + " EXISTS");
-            return true;
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
+//    public static boolean checkTableExists(String dbname,String table) {
+//        System.out.println("\n-----CHECK TABLE ("+table+") EXISTS-----");
+//        Connection con = null;
+//        try {
+//            String url = "jdbc:derby:lib\\database\\" + dbname;
+//
+//            con = DriverManager.getConnection(url); //Open a connection
+//            DatabaseMetaData dbm = con.getMetaData();
+//            ResultSet catalog = dbm.getColumns(null,null,table,null);      
+//            con.close();
+//            System.out.println("TABLE " + table + " EXISTS");
+//            return true;
+//        } catch (SQLException e) {
+//            System.out.println(e.getMessage());
+//        }
+//        return false;
+//    }
     
     
     public static void truncateTable(String dbname,String table) {
@@ -90,6 +82,27 @@ public class BackupFilesExtension {
             con.close();
 
             System.out.println("TABLE "+table+" TRUNCATED");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public static void deleteTable(String dbname,String table) {
+        System.out.println("\n-----DELETE TABLE ("+table+")-----");
+        Connection con = null;
+        try {
+            String url = "jdbc:derby:lib\\database\\" + dbname;
+
+            con = DriverManager.getConnection(url); //Open a connection
+            Statement st = con.createStatement();   
+            String sql = "ALTER TABLE "+table+" DROP COLUMN dept_num";
+            System.out.println("SQL: "+sql);
+            st.executeUpdate(sql);
+            sql = "DROP TABLE "+table;
+            System.out.println("SQL: "+sql);
+            st.executeUpdate(sql);
+            con.close();
+
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -122,7 +135,8 @@ public class BackupFilesExtension {
             String[] columnsnames = null;
             String[] columnstypes = null;
             String[] columnsfun = null;
-
+            
+            
             if ((line = br.readLine()) != null) {
                 columnsnames = line.split(",");
             }
@@ -136,13 +150,13 @@ public class BackupFilesExtension {
             br.close();
 
             String sql = "CREATE TABLE " + table + " (";
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < columnsnames.length; i++) {
 
                 if (columnsfun[i].equals("N")) {
                     columnsfun[i] = "";
                 }
 
-                if (i == 2) {
+                if (i == columnsnames.length-1) {
                     sql += columnsnames[i] + " " + columnstypes[i] + " " + columnsfun[i];
                 } else {
                     sql += columnsnames[i] + " " + columnstypes[i] + " " + columnsfun[i] + ",";
@@ -209,22 +223,13 @@ public class BackupFilesExtension {
 
                 //System.out.println("SQL: " + sql);
                 for (int i = 1; i <= numcols; i++) {
-                    if (data[i - 1].equals("")) {
-                        data[i - 1] = null;
-                    }
-                    String val = data[i - 1];
+                    String val = data[i - 1].equals("") ? null : data[i - 1];
 
                     //System.out.println("DATA "+i+":"+val);
                     //System.out.println("ColumType: " + columnstypes.get(i - 1));
                     //System.out.println("Val: " + val);
                     switch (columnstypes.get(i - 1)) {
-                        case 16: //Boolean
-                            if (val.equals("true")) {
-                                ps.setBoolean(i, true);
-                            } else {
-                                ps.setBoolean(i, false);
-                            }
-                            break;
+                           
                         case 4: //Integer
                             ps.setInt(i, Integer.parseInt(val));
                             break;
@@ -232,8 +237,7 @@ public class BackupFilesExtension {
                             ps.setString(i, val);
                             break;
                         case 91: //Date
-                            System.out.println("date");
-                            ps.setDate(i, new Date(Long.parseLong(val)));
+                            ps.setDate(i, val==null ? null : java.sql.Date.valueOf(val));
                             break;
                         default:
                             ps.setString(i, null);
@@ -254,9 +258,9 @@ public class BackupFilesExtension {
         }
     }
 
-    public static void showTable(String dbname, String table) {
+    public static void showTable(String dbname, String table) throws SQLException{
         System.out.println("\n-----SHOW TABLE ("+table+")-----");
-        try {
+        //try {
             String url = "jdbc:derby:lib\\database\\" + dbname;
             Connection con = DriverManager.getConnection(url);
             Statement st = con.createStatement();
@@ -267,9 +271,9 @@ public class BackupFilesExtension {
             st.close();
             con.close();
 
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+        //} catch (SQLException ex) {
+        //    System.out.println(ex.getMessage());
+        //}
     }
 
 //    public static void deleteFilesDataBase(String dbname, String url) {

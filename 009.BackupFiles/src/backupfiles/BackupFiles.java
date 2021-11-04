@@ -179,13 +179,6 @@ public class BackupFiles {
                     //System.out.println("ColumType: " + columnstypes.get(i - 1));
                     //System.out.println("Val: " + val);
                     switch (columnstypes.get(i - 1)) {
-                        case 16: //Boolean
-                            if (val.equals("true")) {
-                                ps.setBoolean(i, true);
-                            } else {
-                                ps.setBoolean(i, false);
-                            }
-                            break;
                         case 4: //Integer
                             ps.setInt(i, Integer.parseInt(val));
                             break;
@@ -193,8 +186,8 @@ public class BackupFiles {
                             ps.setString(i, val);
                             break;
                         case 91: //Date
-                            System.out.println("Date: "+val);
-                            ps.setDate(i, new Date(Long.parseLong(val)));
+                            ps.setDate(i, val==null ? null : java.sql.Date.valueOf(val));
+                            break;
                         default:
                             ps.setString(i, null);
                             break;
