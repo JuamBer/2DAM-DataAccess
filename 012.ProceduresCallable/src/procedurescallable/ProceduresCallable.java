@@ -22,9 +22,9 @@ public class ProceduresCallable {
         Procedures.createProcedures(stt);
             
         menu(con, stt, call);
-            
-        stt.close();
         
+        stt.close();
+        con.close();
     }
     
     
