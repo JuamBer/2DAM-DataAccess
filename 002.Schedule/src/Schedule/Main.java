@@ -2,8 +2,6 @@ package Schedule;
 
 import java.util.Scanner;
 import java.io.FileOutputStream;
-import com.thoughtworks.xstream.XStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
