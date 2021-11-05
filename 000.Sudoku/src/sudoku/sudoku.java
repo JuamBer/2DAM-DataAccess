@@ -1,4 +1,3 @@
-
 package sudoku;
 
 import java.util.HashSet;

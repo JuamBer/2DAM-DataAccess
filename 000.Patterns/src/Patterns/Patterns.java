@@ -1,4 +1,3 @@
-
 package Patterns;
 
 import java.util.ArrayList;

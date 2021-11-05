@@ -30,7 +30,7 @@ public class MetadataAndStatements {
                     + "6. Evaluate custom query\n"
                     + "7. Quit \n");
             int op = sc.nextInt();
-            
+
             switch (op) {
                 case 1:
                     showTable("teachers");
@@ -54,7 +54,7 @@ public class MetadataAndStatements {
                     key = false;
                     break;
             }
-            
+
         }
     }
 
@@ -197,9 +197,9 @@ public class MetadataAndStatements {
 
         } catch (SQLException ex) {
             String n = ex.getSQLState();
-            System.out.println("STATE: "+n);    
+            System.out.println("STATE: " + n);
             System.out.println(ex.getMessage());
-            
+
         }
     }
 

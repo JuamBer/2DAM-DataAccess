@@ -3,12 +3,14 @@ package procedurescallable;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 public class Procedures {
-    
-    /**Create all procedures of the databa
+
+    /**
+     * Create all procedures of the databa
+     *
      * @param stt
-     * @throws java.sql.SQLException*/
+     * @throws java.sql.SQLException
+     */
     public static void createProcedures(Statement stt) throws SQLException {
         String sql;
 
@@ -54,7 +56,7 @@ public class Procedures {
                 + "BEGIN ATOMIC "
                 + " DECLARE OP INT; "
                 + " SET OP = p/10; "
-                + " UPDATE teachers SET salary = salary + (salary * OP) WHERE dept_num IN (" 
+                + " UPDATE teachers SET salary = salary + (salary * OP) WHERE dept_num IN ("
                 + "     SELECT dept_num FROM departments WHERE name LIKE dept_name);"
                 + "END; ";
         stt.executeUpdate(sql);
@@ -76,18 +78,20 @@ public class Procedures {
                 + "READS SQL DATA "
                 + "BEGIN ATOMIC "
                 + " DECLARE NUMTEACHERS INT; "
-                + " SET NUMTEACHERS = SELECT COUNT(name) FROM teachers WHERE dept_num IN (" 
+                + " SET NUMTEACHERS = SELECT COUNT(name) FROM teachers WHERE dept_num IN ("
                 + "     SELECT dept_num FROM departments WHERE name LIKE dept_name);"
                 + " SET res = NUMTEACHERS; "
                 + "END; ";
         stt.executeUpdate(sql);
 
     }
-    
-    
-    /**Drop all procedures of the database
+
+    /**
+     * Drop all procedures of the database
+     *
      * @param stt
-     * @throws java.sql.SQLException */
+     * @throws java.sql.SQLException
+     */
     public static void dropProcedures(Statement stt) throws SQLException {
         String sql;
 

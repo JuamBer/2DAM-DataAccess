@@ -1,10 +1,9 @@
-
 package Schedule;
 
 import java.io.Serializable;
 
+public class Contact implements Serializable {
 
-public class Contact implements Serializable{
     private String name;
     private String surname;
     private String tel;
@@ -44,7 +43,4 @@ public class Contact implements Serializable{
         return "Contact{" + "name=" + name + ", surname=" + surname + ", tel=" + tel + '}';
     }
 
-    
-
-   
 }

@@ -56,9 +56,9 @@ public class BackupFiles {
                     if (listchilds.length == 0) {
                         fl.delete();
                     } else {
-                        for (int i = 0; i < listchilds.length; i++) {
-                            System.out.println(listchilds[i]);
-                            String newurl = url + "\\" + listchilds[i];
+                        for (String listchild : listchilds) {
+                            System.out.println(listchild);
+                            String newurl = url + "\\" + listchild;
                             deleteFilesDataBase(dbname, newurl);
                         }
                         deleteFilesDataBase(dbname, url);
