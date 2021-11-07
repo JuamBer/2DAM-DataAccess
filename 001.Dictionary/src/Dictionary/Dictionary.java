@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Dictionary {
@@ -76,7 +77,7 @@ public class Dictionary {
                                 bw.write(palabra);
                                 bw.close();
 
-                            } catch (Exception ex) {
+                            } catch (IOException ex) {
                                 System.out.println(ex.getMessage());
                             }
                         }
@@ -85,7 +86,7 @@ public class Dictionary {
                 }
             }
 
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }

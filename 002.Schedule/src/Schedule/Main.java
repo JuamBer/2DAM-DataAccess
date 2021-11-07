@@ -15,9 +15,10 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         boolean key = true;
         Scanner sc = new Scanner(System.in, "ISO-8859-1");
-
+     
         Schedule schedule = null;
-
+        
+                
         try {
             File file = new File("src/Schedule/data/schedule.dat");
 
@@ -26,11 +27,11 @@ public class Main {
                 ObjectInputStream salida = new ObjectInputStream(fos);
                 schedule = (Schedule) salida.readObject();
             } else {
-                ArrayList<Contact> list = new ArrayList<Contact>();
+                ArrayList<Contact> list = new ArrayList<>();
                 schedule = new Schedule(list);
             }
 
-        } catch (Exception e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
 
@@ -75,6 +76,7 @@ public class Main {
     private static void saveExit(Schedule schedule) {
 
         try {
+            
             FileOutputStream fos = new FileOutputStream("src/Schedule/data/schedule.dat");
             ObjectOutputStream salida = new ObjectOutputStream(fos);
 

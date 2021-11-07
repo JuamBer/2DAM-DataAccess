@@ -64,6 +64,7 @@ public class MetadataAndStatements {
 
             connection = DriverManager.getConnection("jdbc:sqlite:lib\\DB");
             Statement st = connection.createStatement();
+         
             ResultSet set = st.executeQuery("SELECT * FROM " + tablename);
             JDBChelper.showResultSet(set);
             connection.close();
