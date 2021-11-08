@@ -1,4 +1,4 @@
-package procedurescallable;
+package examen;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ public class JDBChelper {
 
     /**
      * Show by console a resultset in table format
+     * @param set
      */
     public static void showResultSet(ResultSet set) {
         try {
