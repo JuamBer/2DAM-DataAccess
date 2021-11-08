@@ -27,7 +27,6 @@ INSERT INTO Teachers VALUES (2,'Cristina','Ausina','c.ausina@iesabastos.org','01
 INSERT INTO Teachers VALUES (3,'Imma','Cabanes','i.cabanes@iesabastos.org','01/03/1990',10);
 INSERT INTO Teachers VALUES (4,'Mercedes','Sánchez','m.sanchez@iesabastos.org',NULL,40);
 
-
 --Show the teachers (name, surname and email) that started 20 or more years ago.
 --SELECT Name, Surname, Email FROM Teachers WHERE Start_date < (GETDATE()-20);
 SELECT Name, Surname, Email FROM Teachers WHERE Start_date < '09/29/2001';

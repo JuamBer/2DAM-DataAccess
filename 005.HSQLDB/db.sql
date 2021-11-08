@@ -1,6 +1,5 @@
 --java -cp sqltool.jar;hsqldb.jar org.hsqldb.cmdline.SqlTool --inlineRc url=jdbc:hsqldb:file:CC:\Users\7JDAM\Documents\DataAccess-2DAM\005.HSQLDB\db
 
-
 CREATE TABLE Departments (
     Dept_num INT PRIMARY KEY,
     Name VARCHAR(20),
