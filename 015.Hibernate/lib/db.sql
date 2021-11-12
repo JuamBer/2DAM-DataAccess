@@ -1,21 +1,21 @@
-CREATE DATABASE ejemplojuan;
-USE ejemplojuan;
+CREATE DATABASE ejemplo;
+USE ejemplo;
 
 CREATE TABLE departamentos (
- dept_NO INT NOT NULL PRIMARY KEY,
+ id INT NOT NULL PRIMARY KEY,
  dnombre VARCHAR (15),
  loc VARCHAR (15));
  
 CREATE TABLE empleados (
-Emp_no INT NOT NULL PRIMARY KEY,
+id INT NOT NULL PRIMARY KEY,
 apellido VARCHAR ( 20) ,
 oficio VARCHAR ( 15) ,
 dir INT,
 fecha_alta DATE,
 salario FLOAT (6,2),
 comision FLOAT(6,2),
-dept_NO INT,
-FOREIGN KEY(dept_NO) REFERENCES departamentos(dept_NO));
+id_departamento INT,
+FOREIGN KEY(id_departamento) REFERENCES departamentos(id));
 
 INSERT INTO departamentos VALUES (1, 'Ventas', 'VALENCIA');
 INSERT INTO departamentos VALUES (2, 'Administracion', 'MADRID');
