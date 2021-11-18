@@ -1,9 +1,12 @@
-package hibernateCon;
 
-import Pojos.Departamentos;
-import org.hibernate.*;
+package hibernate3;
 
-public class HibernateCon {
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import pojos.Departamentos;
+
+public class Hibernate3 {
 
     public static void main(String[] args) {
         SessionFactory sessionFactory = NewHibernateUtil.getSessionFactory();
@@ -18,4 +21,5 @@ public class HibernateCon {
         sesion.close();
         //after closing sesion, dep is detached
     }
+    
 }

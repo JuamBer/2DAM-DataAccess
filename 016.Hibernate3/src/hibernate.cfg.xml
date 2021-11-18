@@ -45,7 +45,7 @@ Contributor(s):
     <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/ejemplojuan?zeroDateTimeBehavior=CONVERT_TO_NULL</property>
     <property name="hibernate.connection.username">root</property>
     <property name="hibernate.connection.password">root</property>
-    <mapping resource="Pojos/Departamentos.hbm.xml"/>
-    <mapping resource="Pojos/Empleados.hbm.xml"/>
+    <mapping resource="pojos/Departamentos.hbm.xml"/>
+    <mapping resource="pojos/Empleados.hbm.xml"/>
   </session-factory>
 </hibernate-configuration>
