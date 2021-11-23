@@ -1,12 +1,12 @@
-package act4_1;
+package act4_2;
 
-import hibernate_resources.HibernateUtil;
-import java.util.Scanner;
+import hibernate_resources.*;
 import org.hibernate.*;
-import pojos.Departments;
-import pojos.Teachers;
+import pojos.*;
+import java.util.Scanner;
 
-public class Act4_1 {
+
+public class Act4_2 {
 
     public static Scanner sc = new Scanner(System.in);
 
@@ -55,10 +55,13 @@ public class Act4_1 {
     
     public static void showDepartment(int id) {
         System.out.println("-----showDepartment-----");
+        System.out.println("ID "+id);
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        System.out.println("ID "+id);
         Session sesion = sessionFactory.openSession();
-        Departments department = (Departments) sesion.get(Departments.class, id);
-        System.out.println(department);
+        System.out.println("ID "+id);
+        Teachers department = (Teachers) sesion.get(Teachers.class, id);
+        System.out.println(department.getId());
         sesion.close();
     }
     public static void showTeacher() {
