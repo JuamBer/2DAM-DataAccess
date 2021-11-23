@@ -34,7 +34,7 @@ public class Departments  implements java.io.Serializable {
         return this.deptNum;
     }
     
-public void setDeptNum(int deptNum) {
+    public void setDeptNum(int deptNum) {
         this.deptNum = deptNum;
     }
     public String getName() {
@@ -61,9 +61,10 @@ public void setDeptNum(int deptNum) {
 
     @Override
     public String toString() {
-        return "Departments{" + "deptNum=" + deptNum + ", name=" + name + ", office=" + office + '}';
+        return "Departments{" + "deptNum=" + deptNum + ", name=" + name + ", office=" + office + ", num_teacherses=" + teacherses.size() + '}';
     }
 
+  
 
 
 

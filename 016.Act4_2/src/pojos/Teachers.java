@@ -85,6 +85,11 @@ public class Teachers  implements java.io.Serializable {
         this.salary = salary;
     }
 
+    @Override
+    public String toString() {
+        return "Teachers{" + "id=" + id + ", departments=" + departments + ", name=" + name + ", surname=" + surname + ", email=" + email + ", startDate=" + startDate + ", salary=" + salary + '}';
+    }
+
 
 
 
