@@ -6,12 +6,11 @@ import pojos.*;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.InputMismatchException;
 
 public class Act4_2 {
 
-    private static Scanner sc = new Scanner(System.in);
-    private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+    private static final Scanner sc = new Scanner(System.in);
+    private static final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 
     public static void main(String[] args) throws Exception {
         menu();
@@ -221,10 +220,10 @@ public class Act4_2 {
             if (department.getTeacherses().size() > 0) {
                 department.getTeacherses().forEach(teacherObject -> {
                     Teachers teacher = (Teachers) teacherObject;
-
+                    
                     Date startDate = teacher.getStartDate();
-                    Date today = new Date("24/11/2021");
-
+                    Date today = new Date(System.currentTimeMillis());
+                    
                     long date1InMs = startDate.getTime();
                     long date2InMs = today.getTime();
 
@@ -235,9 +234,9 @@ public class Act4_2 {
                         timeDiff = date2InMs - date1InMs;
                     }
 
-                    int yearsWorking = (int) (timeDiff / ((1000 * 60 * 60 * 24) / 365));
-
-                    if (yearsWorking >= years) {
+                    int yearsWorking = (int) (timeDiff / ((1000 * 60 * 60 * 24)));
+                    
+                    if (yearsWorking >= (years*365)) {
                         if (!(teacher.getSalary() == null)) {
                             float f = (float) (1.0 + (per / 100.0));
                             float newSalary = teacher.getSalary() * f;
@@ -288,23 +287,22 @@ public class Act4_2 {
                     switch (op) {
                         case 1:
                             System.out.println("ID (Department): ");
-                            id = sc.nextInt();
+                            id = Integer.parseInt(sc.nextLine());
                             showDepartment(id);
                             break;
                         case 2:
                             System.out.println("ID (Teacher): ");
-                            id = sc.nextInt();
+                            id = Integer.parseInt(sc.nextLine());
                             showTeacher(id);
                             break;
                         case 3:
                             System.out.println("ID (Department): ");
-                            id = sc.nextInt();
+                            id = Integer.parseInt(sc.nextLine());
                             showTeachersInDepartment(id);
                             break;
                         case 4:
                             System.out.println("deptNum (Department): ");
-                            deptNum = sc.nextInt();
-                            sc.nextLine();
+                            deptNum = Integer.parseInt(sc.nextLine());
                             System.out.println("name (Department): ");
                             name = sc.nextLine();
                             System.out.println("office (Department): ");
@@ -313,16 +311,14 @@ public class Act4_2 {
                             break;
                         case 5:
                             System.out.println("deptNum (Department): ");
-                            deptNum = sc.nextInt();
-                            sc.nextLine();
+                            deptNum = Integer.parseInt(sc.nextLine());
                             System.out.println("name (Department): ");
                             name = sc.nextLine();
                             System.out.println("office (Department): ");
                             office = sc.nextLine();
 
                             System.out.println("id (Teacher): ");
-                            id = sc.nextInt();
-                            sc.nextLine();
+                            id = Integer.parseInt(sc.nextLine());
                             System.out.println("name (Teacher): ");
                             namet = sc.nextLine();
                             System.out.println("surname (Teacher): ");
@@ -333,16 +329,14 @@ public class Act4_2 {
                             d = sc.nextLine();
                             startDatet = new SimpleDateFormat("dd/MM/yyyy").parse(d);
                             System.out.println("salary (Teacher): ");
-                            salary = sc.nextInt();
+                            salary = Integer.parseInt(sc.nextLine());
                             createTeacherAndDepartment(deptNum, name, office, id, namet, surnamet, emailt, startDatet, salary);
                             break;
                         case 6:
                             System.out.println("deptNum (Department): ");
-                            deptNum = sc.nextInt();
-                            sc.nextLine();
+                            deptNum = Integer.parseInt(sc.nextLine());
                             System.out.println("id (Teacher): ");
-                            id = sc.nextInt();
-                            sc.nextLine();
+                            id = Integer.parseInt(sc.nextLine());
                             System.out.println("name (Teacher): ");
                             namet = sc.nextLine();
                             System.out.println("surname (Teacher): ");
@@ -353,41 +347,35 @@ public class Act4_2 {
                             d = sc.nextLine();
                             startDatet = new SimpleDateFormat("dd/MM/yyyy").parse(d);
                             System.out.println("salary (Teacher): ");
-                            salary = sc.nextInt();
+                            salary = Integer.parseInt(sc.nextLine());
 
                             createTeacherInExistingDepartment(deptNum, id, namet, surnamet, emailt, startDatet, salary);
                             break;
                         case 7:
                             System.out.println("id (Teacher): ");
-                            id = sc.nextInt();
-                            sc.nextLine();
+                            id = Integer.parseInt(sc.nextLine());
                             deleteTeacher(id);
                             break;
                         case 8:
                             System.out.println("deptNum (Department): ");
-                            deptNum = sc.nextInt();
-                            sc.nextLine();
+                            deptNum = Integer.parseInt(sc.nextLine());
                             deleteDepartment(deptNum);
                             break;
                         case 9:
                             System.out.println("deptNum (Department): ");
-                            deptNum = sc.nextInt();
-                            sc.nextLine();
+                            deptNum = Integer.parseInt(sc.nextLine());
                             System.out.println("salary (Of all teachers of the Department " + deptNum + "): ");
-                            salary = sc.nextInt();
-                            sc.nextLine();
+                            salary = Integer.parseInt(sc.nextLine());
                             setSalaryOfDepartment(deptNum, salary);
                             break;
                         case 10:
                             System.out.println("deptNum (Department): ");
-                            deptNum = sc.nextInt();
-                            sc.nextLine();
+                            deptNum = Integer.parseInt(sc.nextLine());
                             System.out.println("Percentage to raise salary (Of Seniors teachers of the Department " + deptNum + "): ");
                             float perf = sc.nextFloat();
                             sc.nextLine();
                             System.out.println("Years to be considered Senior: ");
-                            years = sc.nextInt();
-                            sc.nextLine();
+                            years = Integer.parseInt(sc.nextLine());
                             riseSalaryOfDepartmentSeniors(deptNum, perf, years);
                             break;
                         case 11:
@@ -399,17 +387,8 @@ public class Act4_2 {
                     System.out.println("You have to enter a number from 1 to 11");
                 }
             } catch (NumberFormatException ex) {
-                System.out.println("You have to enter a number from 1 to 11");
+                System.out.println("Incorrect Format");
             }
         }while (key); 
-    }
-
-    private static boolean isNumeric(String cad) {
-        try {
-            Integer.parseInt(cad);
-            return true;
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
     }
 }
