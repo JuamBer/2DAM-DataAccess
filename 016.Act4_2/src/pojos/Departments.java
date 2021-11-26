@@ -23,6 +23,13 @@ public class Departments  implements java.io.Serializable {
     public Departments(int deptNum) {
         this.deptNum = deptNum;
     }
+    
+    public Departments(int deptNum, String name, String office) {
+       this.deptNum = deptNum;
+       this.name = name;
+       this.office = office;
+    }
+    
     public Departments(int deptNum, String name, String office, Set teacherses) {
        this.deptNum = deptNum;
        this.name = name;

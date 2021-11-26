@@ -15,7 +15,11 @@ public class Act4_2 {
     public static void main(String[] args) throws Exception {
         menu();
     }
-
+    
+    /**
+     * Shows the department with the id that is passed to it
+     * @param id
+    */
     public static void showDepartment(int id) {
         System.out.println("-----showDepartment-----");
 
@@ -28,7 +32,11 @@ public class Act4_2 {
         }
         sesion.close();
     }
-
+    
+    /**
+     * Shows the teacher with the id that is passed to it
+     * @param id
+    */
     public static void showTeacher(int id) {
         System.out.println("-----showTeacher-----");
 
@@ -41,7 +49,10 @@ public class Act4_2 {
         }
         sesion.close();
     }
-
+    /**
+     * shows all teachers in a department with the id is passed to it
+     * @param id
+    */
     public static void showTeachersInDepartment(int id) {
         System.out.println("-----showTeachersInDepartment-----");
 
@@ -58,23 +69,36 @@ public class Act4_2 {
         }
         sesion.close();
     }
-
+    /**
+     * Create a department.
+     * @param deptNum
+     * @param name
+     * @param office
+    */
     public static void createDepartment(int deptNum, String name, String office) {
         System.out.println("-----createDepartment-----");
 
         Session sesion = sessionFactory.openSession();
         Transaction tx = sesion.beginTransaction();
 
-        Departments department = new Departments();
-        department.setDeptNum(deptNum);
-        department.setName(name);
-        department.setOffice(office);
+        Departments department = new Departments(deptNum,name,office);
         sesion.save(department);
         tx.commit();
         System.out.println("Department Created");
         sesion.close();
     }
-
+    /**
+     * Create a new teacher with a new teacher assigned.
+     * @param deptNum
+     * @param name
+     * @param office
+     * @param id
+     * @param namet
+     * @param surnamet
+     * @param emailt
+     * @param startDatet
+     * @param salary
+    */
     public static void createTeacherAndDepartment(int deptNum, String name, String office, int id, String namet, String surnamet, String emailt, Date startDatet, Integer salary) {
         System.out.println("-----createTeacherAndDepartment-----");
 
@@ -82,29 +106,28 @@ public class Act4_2 {
         Transaction tx;
 
         tx = sesion.beginTransaction();
-        Departments department = new Departments();
-        department.setDeptNum(deptNum);
-        department.setName(name);
-        department.setOffice(office);
+        Departments department = new Departments(deptNum,name,office);
         sesion.save(department);
         tx.commit();
         System.out.println("Department Created");
 
         tx = sesion.beginTransaction();
-        Teachers teacher = new Teachers();
-        teacher.setId(id);
-        teacher.setName(namet);
-        teacher.setSurname(surnamet);
-        teacher.setEmail(emailt);
-        teacher.setStartDate(startDatet);
-        teacher.setSalary(salary);
-        teacher.setDepartments(department);
+        Teachers teacher = new Teachers(id,department,namet,surnamet,emailt,startDatet,salary);
         sesion.save(teacher);
         tx.commit();
         System.out.println("Teacher Created");
         sesion.close();
     }
-
+    /**
+     * Create a new teacher in a existing department.
+     * @param deptNum
+     * @param id
+     * @param namet
+     * @param surnamet
+     * @param emailt
+     * @param startDatet
+     * @param salary
+    */
     public static void createTeacherInExistingDepartment(int deptNum, int id, String namet, String surnamet, String emailt, Date startDatet, Integer salary) {
         System.out.println("-----createTeacherInExistingDepartment-----");
 
@@ -114,14 +137,7 @@ public class Act4_2 {
         Departments department = (Departments) sesion.get(Departments.class, deptNum);
 
         if (!(department == null)) {
-            Teachers teacher = new Teachers();
-            teacher.setId(id);
-            teacher.setName(namet);
-            teacher.setSurname(surnamet);
-            teacher.setEmail(emailt);
-            teacher.setStartDate(startDatet);
-            teacher.setSalary(salary);
-            teacher.setDepartments(department);
+            Teachers teacher = new Teachers(id,department,namet,surnamet,emailt,startDatet,salary);
             sesion.save(teacher);
             tx.commit();
             System.out.println("Teacher Created");
@@ -130,7 +146,10 @@ public class Act4_2 {
         }
         sesion.close();
     }
-
+    /**
+     * Delete a teacher with the id is passed to it
+     * @param id
+    */
     public static void deleteTeacher(int id) {
         System.out.println("-----deleteTeacher-----");
         Session sesion = sessionFactory.openSession();
@@ -146,7 +165,10 @@ public class Act4_2 {
         }
         sesion.close();
     }
-
+    /**
+     * Delete a department with the id is passed to it
+     * @param deptNum
+    */
     public static void deleteDepartment(int deptNum) {
         System.out.println("-----deleteDepartment-----");
         Session sesion = sessionFactory.openSession();
@@ -184,7 +206,11 @@ public class Act4_2 {
         }
         sesion.close();
     }
-
+    /**
+     * Assigns a salary to all teachers in a department
+     * @param deptNum
+     * @param salary
+    */
     public static void setSalaryOfDepartment(int deptNum, int salary) {
         System.out.println("-----setSalaryOfDepartment-----");
 
@@ -208,7 +234,13 @@ public class Act4_2 {
         }
 
     }
-
+    /**
+     * Raises a percentage of salary to all professors in a department who are considered seniors
+     * @param deptNum
+     * @param per
+     * @param years
+     * @throws java.lang.Exception
+    */
     public static void riseSalaryOfDepartmentSeniors(int deptNum, float per, int years) throws Exception {
         System.out.println("-----riseSalaryOfDepartmentSeniors-----");
 
@@ -218,7 +250,7 @@ public class Act4_2 {
 
         if (!(department == null)) {
             if (department.getTeacherses().size() > 0) {
-                department.getTeacherses().forEach(teacherObject -> {
+                department.getTeacherses().forEach((Object teacherObject) -> {
                     Teachers teacher = (Teachers) teacherObject;
                     
                     Date startDate = teacher.getStartDate();
@@ -261,8 +293,7 @@ public class Act4_2 {
         boolean key = true;
 
         do{
-            System.out.println("\n\n");
-            System.out.println("\nChoose an option:\n"
+            System.out.println("\n\n\nChoose an option:\n"
                     + "1. Show a department by ID\n"
                     + "2. Show a teacher by ID\n"
                     + "3. Show the teachers in existing department\n"
