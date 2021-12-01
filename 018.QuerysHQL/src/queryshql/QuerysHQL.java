@@ -60,6 +60,17 @@ public class QuerysHQL {
         }
         session.close();
         
+        System.out.println("\n\n5. ParameterList");
+        session = sf.openSession();
+        q = session.createQuery("FROM Empleados WHERE apellido IN :empNombres");
+        q.setParameterList("empNombres", new String[]{"Martinez","Garcia","Torres"});
+        List <Empleados> listaEmpelados5 = q.list();
+        System.out.println("Se han obtenido "+listaEmpelados5.size()+" resultados.");
+        for (Empleados emp : listaEmpelados5) {
+            System.out.println(emp);
+        }
+        session.close();
+        
         sf.close();
     }
     
