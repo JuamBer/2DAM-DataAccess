@@ -55,11 +55,11 @@ public class Act4_3 {
                         case 3:
                             System.out.println("Insert department name:");
                             String depName3 = sc.nextLine();
-                            System.out.println("AVG Salary: "+getAverageSalaryofDepartment(depName3));
+                            System.out.println("Average salary of "+depName3+": "+getAverageSalaryofDepartment(depName3));
                             break;
                         case 4:
-                            HashMap<String, Double> departmentsAvgMap4 = getAverageSalaryPerDept();
                             Departments[] departments4 = getAllDepartments();
+                            HashMap<String, Double> departmentsAvgMap4 = getAverageSalaryPerDept();
                             ArrayList<String> listKeys4 = new ArrayList();
                             for (Departments department : departments4) {
                                 listKeys4.add(department.getName());
@@ -79,13 +79,19 @@ public class Act4_3 {
                             showTeacher(getMostVeteranTeacher());
                             break;
                         case 7:
-
+                            System.out.println("Insert the new salary:");
+                            int salary7 = Integer.parseInt(sc.nextLine());
+                            System.out.println("Number of rows affected: "+setSalary(salary7));
                             break;
                         case 8:
-
+                            System.out.println("Insert years to be considered senior:");
+                            int years8 = Integer.parseInt(sc.nextLine());
+                            System.out.println("Percentage to rise:");
+                            int per8 = Integer.parseInt(sc.nextLine());
+                            System.out.println("Number of rows affected: "+riseSalaryOfSeniors(years8,per8));
                             break;
                         case 9:
-                            System.out.println("Insert teacher name:");
+                            System.out.println("Insert department name:");
                             String name9 = sc.nextLine();
                             deleteTeachersOfDepartment(name9);
                             break;
