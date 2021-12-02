@@ -31,8 +31,11 @@ public class QueryTeach {
     } 
 
     public static Teachers getMostVeteranTeacher(){
-        return null;
-        
+        Session session = sf.openSession();
+        String hql = "FROM Teachers WHERE startDate = (SELECT MIN(T.startDate) FROM Teachers T)";
+        Query query = session.createQuery(hql);
+        Teachers teacher = (Teachers) query.list().get(0);        
+        return teacher;
     }
 
     public static int setSalary(int newSalary){
@@ -48,7 +51,7 @@ public class QueryTeach {
     public static int deleteTeachersOfDepartment(String depName){
         Session session = sf.openSession();
         Transaction tx = session.beginTransaction();
-        String hql = "DELETE Teachers WHERE departments.deptNum="+depName;
+        String hql = "DELETE Teachers WHERE departments.name="+depName;
         Query query = session.createQuery(hql);
         int affectedRows = query.executeUpdate();  
         tx.commit();

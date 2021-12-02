@@ -2,8 +2,12 @@ package act4_3;
 
 import java.util.HashMap;
 import hibernate_resources.*;
+import static java.util.Collections.list;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -29,15 +33,37 @@ public class QueryDep {
     }
 
     public static Departments getDepartmentByName(String patternName){
-        return null;
+        Session session = sf.openSession();
+        String hql = "FROM Departments WHERE name LIKE '"+patternName+"'";
+        Query query = session.createQuery(hql);
+        Departments department = (Departments) query.list().get(0);       
+        return department;
     }
 
     public static double getAverageSalaryofDepartment(String depName){
-        return 0;
+        Session session = sf.openSession();
+        String hql = "SELECT AVG(salary) FROM Teachers WHERE departments.name = '"+depName+"'";
+        Query query = session.createQuery(hql);
+        
+        if(query == null){
+            return 0;
+        }else{
+            double avgSalary = (double) query.uniqueResult();
+            return avgSalary;
+        }
     }
 
     public static HashMap<String, Double> getAverageSalaryPerDept(){
-        return null;
+        Session session = sf.openSession();
+        String hql = "SELECT departments.name, AVG(salary) FROM Teachers GROUP BY departments";
+        Query query = session.createQuery(hql);
+        
+        List <Object[]> departmentsAvgList = query.list();
+        HashMap<String, Double> departmentsAvgMap = new HashMap();
+        departmentsAvgList.forEach(department -> {
+            departmentsAvgMap.put( (String) department[0], (Double) department[1]);
+        });
+        return departmentsAvgMap;
     }
 
 }
