@@ -3,20 +3,17 @@ package act4_3;
 import static act4_3.QueryTeach.*;
 import static act4_3.QueryDep.*;
 import hibernate_resources.*;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
+import org.hibernate.SessionFactory;
 import pojos.*;
 
 public class Act4_3 {
 
     private static final Scanner sc = new Scanner(System.in);
-
+    private static final SessionFactory sf = HibernateUtil.getSessionFactory();
+    
     public static void main(String[] args) throws Exception {
         menu();
     }
@@ -50,7 +47,10 @@ public class Act4_3 {
                         case 2:
                             System.out.println("Insert department pattern:");
                             String namePattern2 = sc.nextLine();
-                            showDepartment(getDepartmentByName(namePattern2));
+                            Departments department2 = getDepartmentByName(namePattern2);
+                            if(department2!=null){
+                                showDepartment(department2);
+                            }
                             break;
                         case 3:
                             System.out.println("Insert department name:");
@@ -93,10 +93,11 @@ public class Act4_3 {
                         case 9:
                             System.out.println("Insert department name:");
                             String name9 = sc.nextLine();
-                            deleteTeachersOfDepartment(name9);
+                            System.out.println("Number of rows affected: "+deleteTeachersOfDepartment(name9));
                             break;
                         case 10:
                             key = false;
+                            sf.close();
                             break;
                     }
                 } else {

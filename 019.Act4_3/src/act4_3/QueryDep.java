@@ -2,12 +2,9 @@ package act4_3;
 
 import java.util.HashMap;
 import hibernate_resources.*;
-import static java.util.Collections.list;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -36,9 +33,16 @@ public class QueryDep {
     public static Departments getDepartmentByName(String patternName){
         System.out.println("\n\n--------getDepartmentByName--------");
         Session session = sf.openSession();
-        String hql = "FROM Departments WHERE name LIKE '"+patternName+"'";
+        String hql = "FROM Departments WHERE name LIKE ?";
         Query query = session.createQuery(hql);
-        Departments department = (Departments) query.list().get(0);       
+        query.setString(0,patternName);
+        Departments department = null;
+        try{
+            department = (Departments) query.uniqueResult();       
+        }catch(NonUniqueResultException ex){
+            System.out.println("There is more than one result that matches the pattern");
+        }
+        
         return department;
     }
 
@@ -53,8 +57,14 @@ public class QueryDep {
         if(query == null){
             return 0;
         }else{
-            double avgSalary = (double) query.uniqueResult();
-            return avgSalary;
+            try{
+                double avgSalary = (double) query.uniqueResult();
+                return avgSalary;
+            }catch(Exception ex){
+                return 0;
+            }
+            
+            
         }
     }
 

@@ -1,8 +1,6 @@
 package act4_3;
 
-import static act4_3.QueryDep.showDepartment;
 import hibernate_resources.*;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +35,7 @@ public class QueryTeach {
         Session session = sf.openSession();
         String hql = "FROM Teachers WHERE startDate = (SELECT MIN(T.startDate) FROM Teachers T)";
         Query query = session.createQuery(hql);
+        //Teachers teacher = (Teachers) query.uniqueResult();   
         Teachers teacher = (Teachers) query.list().get(0);        
         return teacher;
     }
@@ -45,8 +44,9 @@ public class QueryTeach {
         System.out.println("\n\n--------setSalary--------");
         Session session = sf.openSession();
         Transaction tx = session.beginTransaction();
-        String hql = "UPDATE Teachers SET salary="+newSalary;
+        String hql = "UPDATE Teachers SET salary=?";
         Query query = session.createQuery(hql);
+        query.setInteger(0,newSalary);
         int affectedRows = query.executeUpdate();  
         tx.commit();
         session.close();
@@ -80,7 +80,7 @@ public class QueryTeach {
         System.out.println("\n\n--------deleteTeachersOfDepartment--------");
         Session session = sf.openSession();
         Transaction tx = session.beginTransaction();
-        String hql = "DELETE FROM Teachers WHERE departments.name=:depName";
+        String hql = "DELETE FROM Teachers AS T WHERE T.departments.deptNum IN (FROM Departments AS D WHERE D.name=:depName)";
         Query query = session.createQuery(hql);
         query.setString("depName",depName);
         int affectedRows = query.executeUpdate();  
