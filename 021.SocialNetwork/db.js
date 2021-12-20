@@ -307,6 +307,21 @@ db.user.find({
     groups:1,
 
 })
+
+db.user.find({
+    "groups.1": {
+        $exists: true
+    }
+},
+{
+    _id: 0,
+    name: 1,
+    surname: 1,
+    groups: 1,
+
+});
+
+
 /*
     -14.3 Name, surname and groups(but not the _id) of those users belonging
     to“ historical novel” group and“ theater”.
