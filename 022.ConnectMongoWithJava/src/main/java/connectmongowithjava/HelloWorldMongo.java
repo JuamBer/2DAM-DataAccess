@@ -9,7 +9,7 @@ import java.util.Arrays;
 import org.bson.Document;
 
 
-public class example1 {
+public class HelloWorldMongo {
     public static void main(String[] args) {
         
         MongoClient client = new MongoClient();

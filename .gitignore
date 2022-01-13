@@ -10,3 +10,4 @@ nbdist/
 
 #DataBases Engines
 /Engines/
+/022.ConnectMongoWithJava/target/

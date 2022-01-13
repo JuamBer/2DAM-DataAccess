@@ -15,7 +15,7 @@ import org.bson.Document;
  *
  * @author 7JDAM
  */
-public class insertExercise {
+public class InsertMongo {
     public static void main(String[] args) {
         MongoClient client = new MongoClient();
         MongoDatabase db = client.getDatabase("new_mflix");

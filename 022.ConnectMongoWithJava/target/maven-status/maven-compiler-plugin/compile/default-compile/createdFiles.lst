@@ -1,2 +1,3 @@
-connectmongowithjava\insertExercise.class
-connectmongowithjava\example1.class
+connectmongowithjava\HelloWorldMongo.class
+connectmongowithjava\InsertMongo.class
+connectmongowithjava\FindIterableMongo.class
