@@ -193,17 +193,6 @@ db.user.updateMany({
     }
 })
 /*
-    12 - The user with identifier 6 is deleted from the "dance"
-    group. Write the statement to remove it from its group array. 
-*/
-db.user.updateMany({
-    _id: NumberLong(6)
-}, {
-    $pull: {
-        groups: "dance"
-    }
-})
-/*
     13 - As in any social network, users can enter comments.
     In our case the comments have several fields, which are.
         -Title
@@ -276,7 +265,6 @@ db.user.find({
     name: 1,
     surname: 1,
     age: 1,
-
 })
 /*
     -14.2 Name, surname and groups(but not the _id) of those users belonging
