@@ -1,3 +1,5 @@
-connectmongowithjava\HelloWorldMongo.class
 connectmongowithjava\InsertMongo.class
 connectmongowithjava\FindIterableMongo.class
+connectmongowithjava\DeleteExercises.class
+connectmongowithjava\UpdateExercises.class
+connectmongowithjava\HelloWorldMongo.class
