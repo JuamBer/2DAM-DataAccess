@@ -11,3 +11,4 @@ nbdist/
 #DataBases Engines
 /Engines/
 /022.ConnectMongoWithJava/target/
+/024.PojosInMongo/target/

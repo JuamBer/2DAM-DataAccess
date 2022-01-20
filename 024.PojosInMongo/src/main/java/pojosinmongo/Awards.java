@@ -1,4 +1,4 @@
-package pojos;
+package pojosinmongo;
 
 import org.bson.types.ObjectId;
 

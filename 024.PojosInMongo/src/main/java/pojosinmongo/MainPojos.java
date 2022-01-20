@@ -1,4 +1,4 @@
-package pojos;
+package pojosinmongo;
 
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientSettings;
