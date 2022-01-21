@@ -15,12 +15,12 @@ public class Article {
         this.id = new ObjectId();
     }
     
-    public Article(String name, Double price, List<String> categories, List<Comment> comments) {
+    public Article(String name, Double price, List<String> categories) {
         this.id = new ObjectId();
         this.name = name;
         this.price = price;
         this.categories = categories;
-        this.comments = comments;
+        this.comments = null;
     }
 
     public ObjectId getId() {

@@ -4,18 +4,14 @@ import org.bson.types.ObjectId;
 import pojos_exceptions.IncorrectCommentException;
 
 public class Comment {
-    private ObjectId id;
     private int score;
     private String text;
     private ObjectId id_user;
     
     public Comment(){
-        this.id = new ObjectId();
     }
     
     public Comment(int score, String text, ObjectId id_user) {
-        this.id = new ObjectId();
-        
         if(score > 5 || score < 0){
             new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
         }else{
@@ -24,14 +20,6 @@ public class Comment {
         
         this.text = text;
         this.id_user = id_user;
-    }
-
-    public ObjectId getId() {
-        return id;
-    }
-
-    public void setId(ObjectId id) {
-        this.id = id;
     }
 
     public int getScore() {
@@ -64,7 +52,7 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comments{" + "id=" + id + ", score=" + score + ", text=" + text + ", id_user=" + id_user + '}';
+        return "Comments{ score=" + score + ", text=" + text + ", id_user=" + id_user + '}';
     }
     
     
