@@ -1,0 +1,62 @@
+[
+    {
+        "email": "contacto@juamber.com",
+        "name": "Juan Sáez García",
+        "address": {
+            "city": "Valencia",
+            "country": "España",
+            "number": 5,
+            "street": "Plaza Musico Ramon Ibars"
+        }
+    },
+    {
+        "email": "franciscojavier.gamez@salgado.es",
+        "name": "Francisco Javier",
+        "address": {
+            "city": "Madrid",
+            "country": "España",
+            "number": 8,
+            "street": "Paseo Galindo"
+        }
+    },
+    {
+        "email": "corlina.velaz2@gmail.com",
+        "name": "Carolina Velázquez Segundo",
+        "address": {
+            "city": "Valencia",
+            "country": "España",
+            "number": 92,
+            "street": "Ronda Jordi"
+        }
+    },
+    {
+        "email": "fat_palacios@hotmail.com",
+        "name": "Fátima Palacios",
+        "address": {
+            "city": "Barcelona",
+            "country": "España",
+            "number": 64,
+            "street": "Carrer Vega"
+        }
+    },
+    {
+        "email": "cristian45@vega.com",
+        "name": "Cristian García",
+        "address": {
+            "city": "Touluse",
+            "country": "Francia",
+            "number": 23,
+            "street": "Avenida Ariadna"
+        }
+    },
+    {
+        "email": "carla59@live.com",
+        "name": "Carla Delao",
+        "address": {
+            "city": "Madrid",
+            "country": "España",
+            "number": 3,
+            "street": "Travessera Raquel"
+        }
+    }
+]

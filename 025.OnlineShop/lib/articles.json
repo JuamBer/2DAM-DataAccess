@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Google Pixel 6 Pro",
+        "price": 1180.23,
+        "categories": ["Smatphone", "Electronic", "Google"]
+    },
+    {
+        "name": "MacBook Pro 13' 2020",
+        "price": 1602.62,
+        "categories": ["Laptop", "Work" ,"Electronic", "Apple"]
+    },
+    {
+        "name": "Iphone 11 128GB",
+        "price": 553.0,
+        "categories": ["Smatphone", "Electronic", "Apple"]
+    },
+    {
+        "name": "Sony WH1000XM3",
+        "price": 221.96,
+        "categories": ["Audio", "Professional", "Electronic", "Sony"]
+    }
+]
