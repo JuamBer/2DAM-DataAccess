@@ -24,6 +24,7 @@ import pojos.User;
 
 //Pojos Exceptions
 import pojos_exceptions.IncorrectArticleException;
+import pojos_exceptions.IncorrectCommentException;
 
 //Java
 import java.util.Arrays;
@@ -155,18 +156,17 @@ public class DataAPI {
         users.updateOne(filter,update);
     }
 
-    public static void addComment(Article art, Comment newCom) {
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
-        Bson filter = eq("_id",art.getId());
-        Bson update = push("comments",newCom);
-        articles.updateOne(filter, update);
+    public static void addComment(Article art, Comment newCom) throws IncorrectCommentException{
+            MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
+            Bson filter = eq("_id",art.getId());
+            Bson update = push("comments",newCom);
+            articles.updateOne(filter, update);
     }
 
     /**
      * Delete an article.
      */
     public static void deleteArticle(Article art) {
-        System.out.println("\n\n---deleteArticle---");
         MongoCollection<Article> articles = DataAPI.db.getCollection("users", Article.class);
         Bson filter = eq("_id", art.getId());
         articles.deleteOne(filter);
@@ -176,7 +176,6 @@ public class DataAPI {
      * Delete a user and also all the comments whose author is the user.
      */
     public static void deleteUser(User us) {
-        System.out.println("\n\n---deleteUser---");
         MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
         MongoCollection<User> users = DataAPI.db.getCollection("users", User.class);
         

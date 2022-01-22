@@ -1,25 +1,33 @@
 package onlineshop;
 
-import backend.DataAPI;
+//Mongo
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import org.bson.Document;
+//API
+import backend.DataAPI;
+
+//Exceptions
+import pojos_exceptions.IncorrectArticleException;
+import pojos_exceptions.IncorrectCommentException;
+import java.io.IOException;
+
+//Pojos
 import pojos.Address;
 import pojos.Article;
 import pojos.Comment;
 import pojos.User;
-import pojos_exceptions.IncorrectArticleException;
+
+//Java
+import java.util.Arrays;
 
 public class OnlineShop {
     
     private static DataAPI api;
     
-    public static void main(String[] args) throws IncorrectArticleException, IOException {
+    public static void main(String[] args) throws IncorrectArticleException, IOException, IncorrectCommentException {
         OnlineShop.dropDatabase();
         OnlineShop.insertDemoData();
         
@@ -31,10 +39,16 @@ public class OnlineShop {
         Article newArticle2 = new Article("Other Test Article Title",300.60,Arrays.asList("CategoryTest1","CategoryTest2"));
         api.insertArticle(newArticle);
         api.insertArticle(newArticle2);
+        System.out.println("\tArticle Inserted: "+newArticle);
+        System.out.println("\tArticle Inserted: "+newArticle2);
         
         System.out.println("insertUser");
         User newUser = new User("Test User Name","email@test.com",new Address("Test Direcction",1,"TestCity","TextCountry"));
+        User newUser2 = new User("Other Test User Name","email@test.com",new Address("Other Test Direcction",4,"TestCity","TextCountry"));
         api.insertUser(newUser);
+        api.insertUser(newUser2);
+        System.out.println("\tUser Inserted: "+newUser);
+        System.out.println("\tUser Inserted: "+newUser2);
         
         //System.out.println("findArticle");
         //Article recoveredArticle = api.findArticle(newArticle.getId());
@@ -75,19 +89,41 @@ public class OnlineShop {
         }
         
         System.out.println("updateAddress");
-        api.updateAddress(newUser,new Address("Update Address!",1,"TestCity","TextCountry"));
+        Address updatedAddress = new Address("Update Address!",1,"TestCity","TextCountry");
+        api.updateAddress(newUser,updatedAddress);
+        System.out.println("\tUpdatedAddress: "+updatedAddress+" User: "+newUser);
         
         System.out.println("updateEmail");
-        api.updateEmail(newUser,"updated@email.com");
+        String updatedEmail = "updated@email.com";
+        api.updateEmail(newUser,updatedEmail);
+        System.out.println("\tUpdatedEmail: "+updatedEmail+" User: "+newUser);
         
-        System.out.println("addComment");
+        System.out.println("addComment (Score 4: Correct)");
         Comment newComment = new Comment(4,"New Comment !", newUser.getId());
         api.addComment(newArticle2,newComment);
+        System.out.println("\tNew Comment: "+newComment+" added to the article: "+newArticle2);
+        
+        System.out.println("addComment (Score 6: Incorrect)");
+        Comment incorrectComment1 = new Comment(6,"New Comment !", newUser.getId());
+        try{  
+            api.addComment(newArticle2,incorrectComment1);
+        }catch(IncorrectCommentException ex){
+            System.out.println("\tIncorrectCommentException: "+ex.getMessage());
+        }
+        System.out.println("addComment (Score -1: Incorrect)");
+        Comment incorrectComment2 = new Comment(-1,"New Comment !", newUser.getId());
+        try{  
+            api.addComment(newArticle2,incorrectComment2);
+        }catch(IncorrectCommentException ex){
+            System.out.println("\tIncorrectCommentException: "+ex.getMessage());
+        }
         
         System.out.println("deleteArticle");
         api.deleteArticle(newArticle);
+        System.out.println("\tDeleted Article: "+newArticle);
         
         System.out.println("deleteUser");
+        System.out.println("\tDeleted User: ");
         
         api.close();
     }

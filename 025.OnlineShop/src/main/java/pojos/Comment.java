@@ -11,11 +11,12 @@ public class Comment {
     public Comment(){
     }
     
-    public Comment(int score, String text, ObjectId id_user) {
-        if(score > 5 || score < 0){
-            new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
-        }else{
+    public Comment(int score, String text, ObjectId id_user) throws IncorrectCommentException{
+        if((score <= 5) && (score > 0)){
             this.score = score;
+        }else{
+            System.out.println("INCORRECTTTT");
+            new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
         }
         
         this.text = text;
@@ -26,11 +27,12 @@ public class Comment {
         return score;
     }
 
-    public void setScore(int score) {
-        if(score > 5 || score < 0){
-            new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
-        }else{
+    public void setScore(int score) throws IncorrectCommentException{
+        if((score <= 5) && (score > 0)){
             this.score = score;
+        }else{
+            
+            new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
         }
     }
 
@@ -52,7 +54,7 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comments{ score=" + score + ", text=" + text + ", id_user=" + id_user + '}';
+        return "Comment{ score=" + score + ", text=" + text + ", id_user=" + id_user + '}';
     }
     
     

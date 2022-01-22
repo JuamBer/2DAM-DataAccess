@@ -65,6 +65,6 @@ public class Article {
 
     @Override
     public String toString() {
-        return "Articles{" + "id=" + id + ", name=" + name + ", price=" + price + ", categories=" + categories + ", comments=" + comments + '}';
+        return "Article{" + "id=" + id + ", name=" + name + ", price=" + price + ", categories=" + categories + ", comments=" + comments + '}';
     }
 }
