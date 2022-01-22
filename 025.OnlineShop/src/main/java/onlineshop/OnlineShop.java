@@ -32,113 +32,81 @@ public class OnlineShop {
         OnlineShop.insertDemoData();
         
         api = new DataAPI();
+        
+        //init
         api.init();
         
-        System.out.println("insertArticle");
+        //insertArticle
         Article newArticle = new Article("Test Article Title",95.0,Arrays.asList("CategoryTest1","CategoryTest2"));
         Article newArticle2 = new Article("Other Test Article Title",300.60,Arrays.asList("CategoryTest1","CategoryTest2"));
         api.insertArticle(newArticle);
         api.insertArticle(newArticle2);
-        System.out.println("\tArticle Inserted: "+newArticle);
-        System.out.println("\tArticle Inserted: "+newArticle2);
         
-        System.out.println("insertUser");
+        //insertUser
         User newUser = new User("Test User Name","email@test.com",new Address("Test Direcction",1,"TestCity","TextCountry"));
         User newUser2 = new User("Other Test User Name","email@test.com",new Address("Other Test Direcction",4,"TestCity","TextCountry"));
         api.insertUser(newUser);
         api.insertUser(newUser2);
-        System.out.println("\tUser Inserted: "+newUser);
-        System.out.println("\tUser Inserted: "+newUser2);
-        
-        //System.out.println("findArticle");
+       
+        //findArticle
         //Article recoveredArticle = api.findArticle(newArticle.getId());
-        //System.out.println("\t"+recoveredArticle);
         
-        System.out.println("findArticleByCategory");
+        //findArticleByCategory
         FindIterable<Article> articlesByCategory = api.findArticleByCategory("Smartphone");
-        for (Article article : articlesByCategory) {
-            System.out.println("\t"+article);
-        }
         
-        System.out.println("findArticleByName");
+        //findArticleByName
         FindIterable<Article> articlesByName = api.findArticleByName("oo");
-        for (Article article : articlesByName) {
-            System.out.println("\t"+article);
-        }
         
-        System.out.println("findArticleInPriceRank");
+        //findArticleInPriceRank
         FindIterable<Article> articlesByPriceRank = api.findArticleInPriceRank(500,1500);
-        for (Article article : articlesByPriceRank) {
-            System.out.println("\t"+article);
-        }
         
-        //System.out.println("findUser");
+        //findUser
         //User recoveredUser = api.findUser(newUser.getId());
-        //System.out.println("\t"+recoveredUser);
         
-        System.out.println("findUserByCountry");
+        //findUserByCountry
         FindIterable<User> usersByCountry = api.findUserByCountry("España");
-        for (User user : usersByCountry) {
-            System.out.println("\t"+user);
-        }
         
-        System.out.println("orderByPrice");
+        //orderByPrice
         FindIterable<Article> ArticlesOrderedByPrice = api.orderByPrice(articlesByName,true);
-        for (Article article : ArticlesOrderedByPrice) {
-            System.out.println("\t"+article);
-        }
         
-        System.out.println("updateAddress");
+        //updateAddress
         Address updatedAddress = new Address("Update Address!",1,"TestCity","TextCountry");
         api.updateAddress(newUser,updatedAddress);
-        System.out.println("\tUpdatedAddress: "+updatedAddress+" User: "+newUser);
         
-        System.out.println("updateEmail");
+        //updateEmail
         String updatedEmail = "updated@email.com";
         api.updateEmail(newUser,updatedEmail);
-        System.out.println("\tUpdatedEmail: "+updatedEmail+" User: "+newUser);
         
-        System.out.println("addComment (Score 4: Correct)");
-        Comment newComment = new Comment(4,"New Comment !", newUser.getId());
-        api.addComment(newArticle2,newComment);
-        System.out.println("\tNew Comment: "+newComment+" added to the article: "+newArticle2);
-        
-        System.out.println("addComment (Score 6: Incorrect)");
-        Comment incorrectComment1 = new Comment(6,"New Comment !", newUser.getId());
+        //addComment
         try{  
-            api.addComment(newArticle2,incorrectComment1);
+            Comment newComment = new Comment(4,"New Comment !", newUser.getId());
+            api.addComment(newArticle2,newComment);
         }catch(IncorrectCommentException ex){
             System.out.println("\tIncorrectCommentException: "+ex.getMessage());
         }
-        System.out.println("addComment (Score -1: Incorrect)");
-        Comment incorrectComment2 = new Comment(-1,"New Comment !", newUser.getId());
-        try{  
+        try{
+            Comment incorrectComment1 = new Comment(6,"New Comment !", newUser.getId());
+            api.addComment(newArticle2,incorrectComment1);
+        }catch(IncorrectCommentException ex){
+            System.out.println("\tIncorrectCommentException: "+ex.getMessage());
+        }    
+        try{
+            Comment incorrectComment2 = new Comment(-1,"New Comment !", newUser.getId());
             api.addComment(newArticle2,incorrectComment2);
         }catch(IncorrectCommentException ex){
             System.out.println("\tIncorrectCommentException: "+ex.getMessage());
         }
         
-        System.out.println("deleteArticle");
+        //deleteArticle
         api.deleteArticle(newArticle);
-        System.out.println("\tDeleted Article: "+newArticle);
         
-        System.out.println("deleteUser");
-        System.out.println("\tDeleted User: ");
+        //deleteUser
+        api.deleteUser(newUser);
         
+        //close
         api.close();
     }
     
-    public static void printFindIterableItems(FindIterable<Object> fi){
-        
-  
-        
-    }
-    public static void testInsertUser(){
-        
-    }
-    public static void testFindArticle(){
-        
-    }
     
     public static void insertDemoData() throws IOException{
         

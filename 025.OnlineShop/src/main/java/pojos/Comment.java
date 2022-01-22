@@ -15,8 +15,7 @@ public class Comment {
         if((score <= 5) && (score > 0)){
             this.score = score;
         }else{
-            System.out.println("INCORRECTTTT");
-            new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
+            throw new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
         }
         
         this.text = text;
@@ -31,8 +30,7 @@ public class Comment {
         if((score <= 5) && (score > 0)){
             this.score = score;
         }else{
-            
-            new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
+            throw new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
         }
     }
 
