@@ -10,7 +10,6 @@ import org.bson.Document;
 import backend.DataAPI;
 
 //Exceptions
-import pojos_exceptions.IncorrectArticleException;
 import pojos_exceptions.IncorrectCommentException;
 import java.io.IOException;
 
@@ -22,12 +21,13 @@ import pojos.User;
 
 //Java
 import java.util.Arrays;
+import org.bson.types.ObjectId;
 
 public class OnlineShop {
     
     private static DataAPI api;
     
-    public static void main(String[] args) throws IncorrectArticleException, IOException, IncorrectCommentException {
+    public static void main(String[] args) throws IncorrectCommentException, IOException {
         OnlineShop.dropDatabase();
         OnlineShop.insertDemoData();
         
@@ -49,7 +49,7 @@ public class OnlineShop {
         api.insertUser(newUser2);
        
         //findArticle
-        //Article recoveredArticle = api.findArticle(newArticle.getId());
+        Article recoveredArticle = api.findArticle(newArticle.getId());
         
         //findArticleByCategory
         FindIterable<Article> articlesByCategory = api.findArticleByCategory("Smartphone");
@@ -61,13 +61,15 @@ public class OnlineShop {
         FindIterable<Article> articlesByPriceRank = api.findArticleInPriceRank(500,1500);
         
         //findUser
-        //User recoveredUser = api.findUser(newUser.getId());
+        System.out.println("findUser");
+        User recoveredUser = api.findUser(newUser.getId());
+        System.out.println("\tUser: "+recoveredUser);
         
         //findUserByCountry
         FindIterable<User> usersByCountry = api.findUserByCountry("España");
         
         //orderByPrice
-        FindIterable<Article> ArticlesOrderedByPrice = api.orderByPrice(articlesByName,true);
+        FindIterable<Article> ArticlesOrderedByPrice = api.orderByPrice(articlesByCategory,false);
         
         //updateAddress
         Address updatedAddress = new Address("Update Address!",1,"TestCity","TextCountry");
@@ -91,7 +93,7 @@ public class OnlineShop {
             System.out.println("\tIncorrectCommentException: "+ex.getMessage());
         }    
         try{
-            Comment incorrectComment2 = new Comment(-1,"New Comment !", newUser.getId());
+            Comment incorrectComment2 = new Comment(3,"New Comment !", new ObjectId());
             api.addComment(newArticle2,incorrectComment2);
         }catch(IncorrectCommentException ex){
             System.out.println("\tIncorrectCommentException: "+ex.getMessage());

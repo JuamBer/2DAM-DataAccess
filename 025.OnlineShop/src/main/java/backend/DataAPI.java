@@ -23,20 +23,16 @@ import pojos.Comment;
 import pojos.User;
 
 //Pojos Exceptions
-import pojos_exceptions.IncorrectArticleException;
 import pojos_exceptions.IncorrectCommentException;
-
-//Java
-import java.util.Arrays;
-import java.util.List;
-import java.util.regex.Pattern;
 
 public class DataAPI {
 
     private static MongoClient client;
     private static MongoDatabase db;
     private static String dbName;
-
+    private static MongoCollection<Article> articles;
+    private static MongoCollection<User> users;
+    
     public DataAPI() {
         DataAPI.dbName = "act5_3";
     }
@@ -48,22 +44,24 @@ public class DataAPI {
     public static void init() {
         DataAPI.client = new MongoClient();
         DataAPI.db = DataAPI.client.getDatabase(DataAPI.dbName);
-
+                
         CodecRegistry pojoCodecRegistry
                 = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
                         fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
         DataAPI.db = DataAPI.db.withCodecRegistry(pojoCodecRegistry);
+        
+        
+        DataAPI.articles = DataAPI.db.getCollection("articles", Article.class);
+        DataAPI.users = DataAPI.db.getCollection("users", User.class);
     }
 
     public static void close() {
         DataAPI.client.close();
     }
 
-    public static void insertArticle(Article art) throws IncorrectArticleException {
+    public static void insertArticle(Article art) {
         System.out.println("insertArticle");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
-        MongoCollection<User> users = DataAPI.db.getCollection("users", User.class);
         articles.insertOne(art);
         System.out.println("\tArticle Inserted: "+art);
 
@@ -71,16 +69,14 @@ public class DataAPI {
 
     public static void insertUser(User us) {
         System.out.println("insertUser");
-        MongoCollection<User> users = DataAPI.db.getCollection("users", User.class);
         users.insertOne(us);
         System.out.println("\tUser Inserted: "+us);
     }
 
     public static Article findArticle(ObjectId id) {
         System.out.println("findArticle");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
         Bson filter = eq("_id", id);
-        Article articleRes = (Article) articles.find(filter);
+        Article articleRes = articles.find(filter).first();
         System.out.println("\t"+articleRes);
         return articleRes;
     }
@@ -90,7 +86,6 @@ public class DataAPI {
      */
     public static FindIterable<Article> findArticleByCategory(String cat) {
         System.out.println("findArticleByCategory");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
         Bson filter = eq("categories", cat);
         FindIterable<Article> articlesResult = articles.find(filter);
         for (Article article : articlesResult) {
@@ -104,9 +99,7 @@ public class DataAPI {
      */
     public static FindIterable<Article> findArticleByName(String str) {
         System.out.println("findArticleByName");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
-        Pattern strRegex = Pattern.compile("/i", Pattern.CASE_INSENSITIVE);
-        Bson filter = eq("name", strRegex);
+        Bson filter = regex("name", str, "/x");
         FindIterable<Article> articlesResult = articles.find(filter);
         for (Article article : articlesResult) {
             System.out.println("\t"+article);
@@ -120,7 +113,6 @@ public class DataAPI {
      */
     public static FindIterable<Article> findArticleInPriceRank(double low, double high) {
         System.out.println("findArticleInPriceRank");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
         Bson filter = and(gte("price", low), lte("price", high));
         FindIterable<Article> articlesResult = articles.find(filter);
         for (Article article : articlesResult) {
@@ -130,11 +122,8 @@ public class DataAPI {
     }
 
     public static User findUser(ObjectId id) {
-        System.out.println("findUser");
-        MongoCollection<User> users = DataAPI.db.getCollection("users", User.class);
         Bson filter = eq("_id", id);
-        User userRes = (User) users.find(filter);
-        System.out.println("\t"+userRes);
+        User userRes = users.find(filter).first();
         return userRes;
     }
 
@@ -143,7 +132,6 @@ public class DataAPI {
      */
     public static FindIterable<User> findUserByCountry(String country) {
         System.out.println("findUserByCountry");
-        MongoCollection<User> users = DataAPI.db.getCollection("users", User.class);
         Bson filter = eq("address.country", country);
         FindIterable<User> usersRes = (FindIterable<User>) users.find(filter);
         for (User user : usersRes) {
@@ -181,20 +169,24 @@ public class DataAPI {
 
     public static void updateEmail(User us, String email) {
         System.out.println("updateEmail");
-        MongoCollection<User> users = DataAPI.db.getCollection("users", User.class);
         Bson filter = eq("_id", us.getId());
         Bson update = set("email", email);
         users.updateOne(filter, update);
         System.out.println("\tUpdatedEmail: "+email+" User: "+us);
     }
 
-    public static void addComment(Article art, Comment newCom) {
+    public static void addComment(Article art, Comment newCom) throws IncorrectCommentException {
         System.out.println("addComment");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
-        Bson filter = eq("_id", art.getId());
-        Bson update = push("comments", newCom);
-        articles.updateOne(filter, update);
-        System.out.println("\tComment Added: "+newCom);           
+        
+        if(DataAPI.findUser(newCom.getId_user()) != null){
+            Bson filter = eq("_id", art.getId());
+            Bson update = push("comments", newCom);
+            articles.updateOne(filter, update);
+            System.out.println("\tComment Added: "+newCom);          
+        }else{
+            throw new IncorrectCommentException("The user posting the comment must exist in the database");   
+        }
+         
     }
 
     /**
@@ -202,7 +194,6 @@ public class DataAPI {
      */
     public static void deleteArticle(Article art) {
         System.out.println("deleteArticle");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("users", Article.class);
         Bson filter = eq("_id", art.getId());
         articles.deleteOne(filter);
         System.out.println("\tDeleted Article: "+art);
@@ -213,24 +204,12 @@ public class DataAPI {
      */
     public static void deleteUser(User us) {
         System.out.println("deleteUser");
-        MongoCollection<Article> articles = DataAPI.db.getCollection("articles", Article.class);
-        MongoCollection<User> users = DataAPI.db.getCollection("users", User.class);
 
         Bson filterComment = eq("comments.id_user", us.getId());
-        FindIterable<Article> articlesRes = articles.find(filterComment);
-
-        for (Article article : articlesRes) {
-            System.out.println("\tArticles");
-            List<Comment> comments = article.getComments();
-            for (int i = 0; i < comments.size() - 1; i++) {
-                System.out.println("\tComments");
-                if (comments.get(i).getId_user().equals(us.getId())) {
-                    comments.remove(i);
-                    System.out.println("\tDeleted Comment: " + comments.get(i));
-                }
-            }
-        }
-
+        Bson update = pull("comments",eq("id_user", us.getId()));
+        var a =  articles.updateMany(filterComment,update);
+        System.out.println("\tDeleted Comments: " + a);
+       
         Bson filterUser = eq("_id", us.getId());
         users.deleteOne(filterUser);
         System.out.println("\tDeleted User: " + us);

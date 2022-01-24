@@ -12,10 +12,12 @@ public class Comment {
     }
     
     public Comment(int score, String text, ObjectId id_user) throws IncorrectCommentException{
-        if((score <= 5) && (score > 0)){
-            this.score = score;
+        if(score >= 5){
+            this.score = 5;
+        }else if(score <= 0){
+            this.score = 0;
         }else{
-            throw new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
+            this.score = score;
         }
         
         this.text = text;
@@ -27,10 +29,12 @@ public class Comment {
     }
 
     public void setScore(int score) throws IncorrectCommentException{
-        if((score <= 5) && (score > 0)){
-            this.score = score;
+        if(score >= 5){
+            this.score = 5;
+        }else if(score <= 0){
+            this.score = 0;
         }else{
-            throw new IncorrectCommentException("The score of the comment must be a value between 0 and 5");
+            this.score = score;
         }
     }
 
