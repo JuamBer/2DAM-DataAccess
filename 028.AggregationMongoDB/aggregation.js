@@ -93,3 +93,47 @@ db.movies.aggregate([{
         }
     }
 }]);
+
+
+//1. Get the film which won the maximum number of awards and show only 
+// the id, title, directors and number of awards(this named as win).
+db.movies.aggregate([{
+    $sort: {
+        "awards.wins": 1
+    }
+}, {
+    $limit: 1
+}, {
+    $set:{
+        win: "$awards.wins"
+    }
+},
+{
+    $project: {
+        title: 1,
+        directors: 1,
+        win:1
+    }
+}]);
+
+//2. Para las películas cuyo año es un string. modifica el campo year 
+//para que sea un numero formado pormlas cuadtro primeras cifras
+
+db.movies.aggregate([{
+        $match: {
+            year: {
+                $type: "string"
+            }
+        }
+    }, {
+        $set: {
+            year: { $substrBytes: [ "$year", 0, 4 ]}
+        }
+    },
+    {
+        $out: {
+            db:"mflix",
+            coll: "data"
+        }
+    }
+]);
